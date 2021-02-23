@@ -1,45 +1,27 @@
-from flask import Flask, request, Response
-from bot import Bot
-from datetime import datetime, timedelta
+from flask import Flask, Response, request
+from telegram.ext import Updater
+import telegram
+from bot import LanguageLearningBot
 
-# Made by catinapoke with Akenth0r
+# https://api.telegram.org/bot1623674677:AAFNHd1PgUbzKH3YW7nUoUGXKzEePGGq3tY/setWebhook?url=https://5ac3d6c47f25.ngrok.io
 
 TOKEN = '1623674677:AAFNHd1PgUbzKH3YW7nUoUGXKzEePGGq3tY'  # AAFNHd1PgUbzKH3YW7nUoUGXKzWePGGGq3tY
+URL = 'https://e62a67f2c928.ngrok.io'
 DEBUG = False
 
 app = Flask(__name__)
-bot = Bot(TOKEN)
+bot = LanguageLearningBot(TOKEN)
 
 
-def start_handler(message: dict):
-    bot.send_message(message['chat']['id'], 'Hello to you in back!')
-
-
-bot.add_handler('hello', start_handler)
-
-
-def handle_message(message: dict):
-    # chat_id = request.json["message"]["chat"]["id"]
-    # text = request.json["message"]["text"]
-    # bot.send_message(chat_id, f"I got message \"{text}\"", [["Адин"], ["Два", "Три"]],
-    #                  reply_to_message_id=request.json["message"]["message_id"])
-    # if DEBUG:
-    #     for var in request.json:
-    #         print(f'{var}; {request.json[var]}')
-    bot.handle_message(message['message'])
-
-
-def check_timestamp(timestamp):
-    timestamp = request.json["message"]["date"]
-    dt_object = datetime.fromtimestamp(timestamp)
-    return (datetime.now() - dt_object) > timedelta(minutes=5)
-
-
-@app.route("/", methods=["GET", "POST"])
+@app.route("/1623674677:AAFNHd1PgUbzKH3YW7nUoUGXKzEePGGq3tY", methods=["GET", "POST"])
 def receive_update():
-    if request.method == "POST" and not check_timestamp(request.json["message"]["date"]):
-        handle_message(request.json)
+    bot.handle_update(request.json)
 
-    return Response('{"ok": true}', status=200, mimetype='application/json')
+    return {'ok': True}
 
-# https://flask-aiohttp.readthedocs.io/en/latest/
+@app.route("/setWebhook")
+def set_webhook():
+    bot.updater.bot.set_webhook(
+        f'{URL}/{TOKEN}'
+    )
+    return 'ok'

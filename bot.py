@@ -1,53 +1,33 @@
-import requests
-import json
-import telegram_api as api
+import telegram
+from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters, CallbackQueryHandler
+import bot_views.start as start
+import bot_views.settings as settings
+import bot_views.statistics as statistics
+import bot_views.test as test
+import states
 
-# _handlers = ["methodName":  function, ...]
-class Bot:
 
+class LanguageLearningBot:
     def __init__(self, token):
-        self.token = token
-        self._bot_url = f"https://api.telegram.org/bot{self.token}"
-        # Разные меню имя/пункты
-        self._menus = {}
-        # Обработчики команд/сообщений
-        self._handlers = {}
-
-    def handle_message(self, message):
-        if message['text'] in self._handlers.keys():
-            self._handlers[message['text']](message)
-
-    def send_message(self, chat_id, text, keyboard_array=None, reply_to_message_id=None):
-        data = {"chat_id": chat_id, "text": text}
-        if keyboard_array is not None:
-            data["reply_markup"] = api.reply_keyboard(keyboard_array)
-        if reply_to_message_id is not None:
-            data["reply_to_message_id"] = reply_to_message_id
-        api.telegram_method(api.METHOD_SEND_MESSAGE, data, self._bot_url)
-
-    def add_menu(self, menu):
-        pass
-
-    def add_handler(self, command, handler):
-        print(f'registered command {command}')
-        self._handlers[command] = handler
-
-    def remove_handler(self, command):
-        pass
+        self.updater = Updater(token, use_context=True)
+        self._init_handlers()
 
 
-class Settings:
-    def __init__(self, settings={}):
-        self._settings = settings
+    def handle_update(self, req_json):
+        update = telegram.Update.de_json(req_json, self.updater.bot)
+        self.updater.dispatcher.process_update(update)
 
-   # Установить настройку
-    def set(self, key, value):
-        pass
-
-    # Получить настройку
-    def get(self, key, value):
-        pass
-
-    # Сохраняем что-то
-    def save(self):
-        pass
+    def _init_handlers(self):
+        conv_handler = ConversationHandler(
+            entry_points=[CommandHandler('start', start.start_command)],
+            states={
+                states.CHOOSING: [
+                    CallbackQueryHandler(test.test_begin, pattern=f'^{str(states.TEST)}$')
+                ],
+                states.TEST: [],
+                states.STATISTICS: [],
+                states.SETTINGS: [],
+            },
+            fallbacks=[],
+        )
+        self.updater.dispatcher.add_handler(conv_handler)
