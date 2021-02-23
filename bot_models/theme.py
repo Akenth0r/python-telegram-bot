@@ -1,5 +1,8 @@
 from typing import List
 
+import constants
+import file_system_helper
+import os
 
 # Слово темы
 class ThemeWord:
@@ -28,10 +31,19 @@ class Theme:
         self.words.append(word)
 
     def save(self):
-        pass
+        # Получаем путь до папки с темами
+        filepath = os.path.sep.join([constants.BASE_PATH, 'data', 'themes', f'{self.title}.json'])
+        # Сохраняем
+        file_system_helper.save_to_file(filepath, self.serialize())
 
+    # Загрузить тему из файла
     def load(self, theme_title: str):
-        pass
+        # Получаем путь до папки с темами
+        filepath = os.path.sep.join([constants.BASE_PATH, 'data', 'themes', f'{theme_title}.json'])
+        # Загружаем в словарь
+        obj = file_system_helper.load_from_file(filepath)
+        # Спокойненько десериализуем объект
+        self.deserialize(obj)
 
     def serialize(self):
         res = {'title': self.title, 'words': []}

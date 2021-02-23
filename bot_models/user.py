@@ -1,4 +1,11 @@
 # Настройки пользователя
+import os
+
+import constants
+import file_system_helper
+
+
+# TODO: когда начнем работать с базами данных, добавить второстепенным моделям интерфейс save/load
 class UserSettings:
     def __init__(self, theme_id=None, right_answer_count=1, session_words_count=5):
         self.theme_id = theme_id
@@ -44,11 +51,19 @@ class User:
         self.statistics = statistics
 
     def save(self):
-        pass
+        # Получаем путь до папки с темами
+        filepath = os.path.sep.join([constants.BASE_PATH, 'data', 'users', f'{self.user_id}.json'])
+        # Сохраняем
+        file_system_helper.save_to_file(filepath, self.serialize())
 
     # Пока что user_id это строка с названием файла, но в будущем, возможно, всё изменится...
     def load(self, user_id: str):
-        pass
+        # Получаем путь до папки с темами
+        filepath = os.path.sep.join([constants.BASE_PATH, 'data', 'users', f'{user_id}.json'])
+        # Загружаем в словарь
+        obj = file_system_helper.load_from_file(filepath)
+        # Спокойненько десериализуем объект
+        self.deserialize(obj)
 
     def serialize(self):
         return {
