@@ -1,9 +1,17 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
+
+from bot_models.user import User
 from states import TEST, STATISTICS, SETTINGS, CHOOSING
 
 
 def start_command(update: Update, context: CallbackContext):
+    # Запомнить пользователя, если не запомнен
+    user = User()
+    if not user.load(str(update.message.chat_id)):
+        user.user_id = update.message.chat_id
+        user.save()
+
     keyboard_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton('Начать тест', callback_data=str(TEST))],
         [InlineKeyboardButton('Статистика', callback_data=str(STATISTICS))],

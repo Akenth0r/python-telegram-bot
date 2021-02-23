@@ -12,7 +12,6 @@ class LanguageLearningBot:
         self.updater = Updater(token, use_context=True)
         self._init_handlers()
 
-
     def handle_update(self, req_json):
         update = telegram.Update.de_json(req_json, self.updater.bot)
         self.updater.dispatcher.process_update(update)
@@ -22,11 +21,18 @@ class LanguageLearningBot:
             entry_points=[CommandHandler('start', start.start_command)],
             states={
                 states.CHOOSING: [
-                    CallbackQueryHandler(test.test_begin, pattern=f'^{str(states.TEST)}$')
+                    CallbackQueryHandler(test.test_begin, pattern=f'^{str(states.TEST)}$'),
+                    CallbackQueryHandler(settings.settings_start, pattern=f'^{str(states.SETTINGS)}$')
                 ],
-                states.TEST: [],
-                states.STATISTICS: [],
-                states.SETTINGS: [],
+                states.TEST: [
+
+                ],
+                states.STATISTICS: [
+
+                ],
+                states.SETTINGS: [
+
+                ],
             },
             fallbacks=[],
         )

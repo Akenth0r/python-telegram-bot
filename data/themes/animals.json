@@ -1,0 +1,45 @@
+{
+  "title": "animals",
+  "words": [
+    {
+      "original": "Gorilla",
+      "translation": "Горилла"
+    },
+    {
+      "original": "Dog",
+      "translation": "Собака"
+    },
+    {
+      "original": "Cat",
+      "translation": "Кошка"
+    },
+    {
+      "original": "Whale",
+      "translation": "Кит"
+    },
+    {
+      "original": "Cheetah",
+      "translation": "Гепард"
+    },
+    {
+      "original": "Giraffe",
+      "translation": "Жираф"
+    },
+    {
+      "original": "Woodpecker",
+      "translation": "Дятел"
+    },
+    {
+      "original": "Shark",
+      "translation": "Акула"
+    },
+    {
+      "original": "Octopus",
+      "translation": "Осьминог"
+    },
+    {
+      "original": "Camel",
+      "translation": "Верблюд"
+    }
+  ]
+}

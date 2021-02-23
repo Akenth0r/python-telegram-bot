@@ -4,6 +4,7 @@ import constants
 import file_system_helper
 import os
 
+
 # Слово темы
 class ThemeWord:
     def __init__(self, original: str = '', translation: str = ''):
@@ -17,8 +18,11 @@ class ThemeWord:
         }
 
     def deserialize(self, obj: dict):
+        if obj is None:
+            return False
         self.original = obj['original']
         self.translation = obj['translation']
+        return True
 
 
 # Тема - массив слов и название
@@ -43,7 +47,7 @@ class Theme:
         # Загружаем в словарь
         obj = file_system_helper.load_from_file(filepath)
         # Спокойненько десериализуем объект
-        self.deserialize(obj)
+        return self.deserialize(obj)
 
     def serialize(self):
         res = {'title': self.title, 'words': []}
@@ -52,9 +56,12 @@ class Theme:
         return res
 
     def deserialize(self, obj):
+        if obj is None:
+            return False
         self.title = obj['title']
         self.words = []
         for word in obj['words']:
             new_word = ThemeWord()
             new_word.deserialize(word)
             self.words.append(new_word)
+        return True

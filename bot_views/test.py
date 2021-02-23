@@ -12,7 +12,6 @@ def test_begin(update: Update, context: CallbackContext):
 def test(update: Update, context: CallbackContext):
     # Вот тут мы подгружаем слова по теме и считаем число правильных ответов
     pass
-    return states.TEST
 
 
 def test_end(update: Update, context: CallbackContext):
