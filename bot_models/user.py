@@ -8,7 +8,7 @@ import file_system_helper
 
 # TODO: когда начнем работать с базами данных, добавить второстепенным моделям интерфейс save/load
 class UserSettings:
-    def __init__(self, theme_id=None, right_answer_count=1, session_words_count=5):
+    def __init__(self, theme_id='animals', right_answer_count=1, session_words_count=5):
         self.theme_id = theme_id
         self.right_answer_count = right_answer_count
         self.session_words_count = session_words_count
