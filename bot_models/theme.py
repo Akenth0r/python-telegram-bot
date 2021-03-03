@@ -11,13 +11,13 @@ class ThemeWord:
         self.original = original
         self.translation = translation
 
-    def serialize(self):
+    def serialize(self) -> dict:
         return {
             "original": self.original,
             "translation": self.translation,
         }
 
-    def deserialize(self, obj: dict):
+    def deserialize(self, obj: dict) -> bool:
         if obj is None:
             return False
         self.original = obj['original']
@@ -28,8 +28,8 @@ class ThemeWord:
 # Тема - массив слов и название
 class Theme:
     def __init__(self, title: str = '', words: List[ThemeWord] = None):
-        self.title = title
-        self.words = words
+        self.title: str = title
+        self.words: List[ThemeWord] = words
 
     def add_word(self, word: ThemeWord):
         self.words.append(word)
@@ -49,13 +49,13 @@ class Theme:
         # Спокойненько десериализуем объект
         return self.deserialize(obj)
 
-    def serialize(self):
+    def serialize(self) -> dict:
         res = {'title': self.title, 'words': []}
         for word in self.words:
             res['words'].append(word.serialize())
         return res
 
-    def deserialize(self, obj):
+    def deserialize(self, obj) -> bool:
         if obj is None:
             return False
         self.title = obj['title']

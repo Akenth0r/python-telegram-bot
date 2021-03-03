@@ -18,14 +18,14 @@ class LanguageLearningBot:
 
     def _init_handlers(self):
         conv_handler = ConversationHandler(
-            entry_points=[CommandHandler('start', start.start_command)],
+            entry_points=[CommandHandler('start', start.start_command), CommandHandler('begin', start.start_command)],
             states={
                 states.CHOOSING: [
                     CallbackQueryHandler(test.test_begin, pattern=f'^{str(states.TEST)}$'),
                     CallbackQueryHandler(settings.settings_start, pattern=f'^{str(states.SETTINGS)}$')
                 ],
                 states.TEST: [
-
+                    CallbackQueryHandler(test.test, pattern=f'^{str(states.TEST)}$'),
                 ],
                 states.STATISTICS: [
 
