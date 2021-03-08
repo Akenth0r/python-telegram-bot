@@ -4,7 +4,7 @@ import json
 
 # Save json string to file
 def save_to_file(filepath: str, obj: dict):
-    with open(filepath, 'w') as file:
+    with open(filepath, 'w', encoding='utf-8') as file:
         json.dump(obj, file, indent=4)
 
 
@@ -12,7 +12,7 @@ def save_to_file(filepath: str, obj: dict):
 def load_from_file(filepath: str):
     if not is_file_exist(filepath):
         return None
-    with open(filepath, 'r') as file:
+    with open(filepath, 'r', encoding='utf-8') as file:
         return json.load(file)
 
 

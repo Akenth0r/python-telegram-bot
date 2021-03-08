@@ -18,8 +18,18 @@ def start_command(update: Update, context: CallbackContext):
         [InlineKeyboardButton('Начать тест', callback_data=str(TEST))],
         [InlineKeyboardButton('Статистика', callback_data=str(STATISTICS))],
         [InlineKeyboardButton('Настройки', callback_data=str(SETTINGS))],
-        [InlineKeyboardButton('Выдача лоли', callback_data=str(777))],
+        # [InlineKeyboardButton('Выдача лоли', callback_data=str(777))],
     ])
-    update.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)
 
+    update.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)
+    return CHOOSING
+
+
+def restart(update: Update, context: CallbackContext):
+    keyboard_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton('Начать тест', callback_data=str(TEST))],
+        [InlineKeyboardButton('Статистика', callback_data=str(STATISTICS))],
+        [InlineKeyboardButton('Настройки', callback_data=str(SETTINGS))],
+    ])
+    update.callback_query.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)
     return CHOOSING

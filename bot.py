@@ -25,10 +25,12 @@ class LanguageLearningBot:
                     CallbackQueryHandler(settings.settings_start, pattern=f'^{str(states.SETTINGS)}$')
                 ],
                 states.TEST: [
-                    CallbackQueryHandler(test.test, pattern=f'^{str(states.TEST)}$'),
+                    CallbackQueryHandler(test.test, pattern=f'^\w+(_\w)?'),
+                    CallbackQueryHandler(start.restart, pattern=f'@exit'),
+                    CallbackQueryHandler(start.restart, pattern=f'@example'),
                 ],
                 states.STATISTICS: [
-
+                    # start.restart()
                 ],
                 states.SETTINGS: [
 

@@ -75,7 +75,7 @@ class UserStatistics:
         self.words_left = obj['words_left']
         self.words_remembered = obj['remembered_words_count']
         self.remembered_words_list = []
-        for word in obj['remembered_Words_list']:
+        for word in obj['remembered_words_list']:
             remembered_word = UserStatisticsRememberedWord()
             remembered_word.deserialize(word)
             self.remembered_words_list.append(remembered_word)
