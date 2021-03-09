@@ -29,31 +29,31 @@ class UserSettings:
         return True
 
 
-class UserStatisticsRememberedWord:
-    def __init__(self, word: str = '', right_answer_count: int = 0):
-        self.word = word
-        self.right_answer_count = right_answer_count
-
-    def serialize(self):
-        return {
-            "word": self.word,
-            "right_answer_count": self.right_answer_count
-        }
-
-    def deserialize(self, obj: dict):
-        if obj is None:
-            return False
-        self.word = obj['word']
-        self.right_answer_count = obj['right_answer_count']
-        return True
+# class UserStatisticsRememberedWord:
+#     def __init__(self, word: str = '', right_answer_count: int = 0):
+#         self.word = word
+#         self.right_answer_count = right_answer_count
+#
+#     def serialize(self):
+#         return {
+#             "word": self.word,
+#             "right_answer_count": self.right_answer_count
+#         }
+#
+#     def deserialize(self, obj: dict):
+#         if obj is None:
+#             return False
+#         self.word = obj['word']
+#         self.right_answer_count = obj['right_answer_count']
+#         return True
 
 
 # Статистика пользователя
 class UserStatistics:
     def __init__(self, remembered_words_count=0, words_left=0,
-                 remembered_words_list: List[UserStatisticsRememberedWord] = None):
+                 remembered_words_list: dict = None):
         if remembered_words_list is None:
-            remembered_words_list = []
+            remembered_words_list = {}
         self.words_remembered = remembered_words_count
         self.words_left = words_left
         self.remembered_words_list = remembered_words_list
@@ -63,10 +63,10 @@ class UserStatistics:
         res = {
             "remembered_words_count": self.words_remembered,
             "words_left": self.words_left,
-            "remembered_words_list": [],
+            "remembered_words_list": {},
         }
-        for word in self.remembered_words_list:
-            res['remembered_words_list'].append(word.serialize())
+        for key in self.remembered_words_list:
+            res['remembered_words_list'].setdefault(key, self.remembered_words_list[key])
         return res
 
     def deserialize(self, obj: dict):
@@ -74,11 +74,11 @@ class UserStatistics:
             return False
         self.words_left = obj['words_left']
         self.words_remembered = obj['remembered_words_count']
-        self.remembered_words_list = []
-        for word in obj['remembered_words_list']:
-            remembered_word = UserStatisticsRememberedWord()
-            remembered_word.deserialize(word)
-            self.remembered_words_list.append(remembered_word)
+        self.remembered_words_list = {}
+        for key in obj['remembered_words_list']:
+            #remembered_word = UserStatisticsRememberedWord()
+            #remembered_word.deserialize(word)
+            self.remembered_words_list.setdefault(key, obj['remembered_words_list'][key])
 
         return True
 
@@ -97,13 +97,20 @@ class User:
         file_system_helper.save_to_file(filepath, self.serialize())
 
     # Пока что user_id это строка с названием файла, но в будущем, возможно, всё изменится...
-    def load(self, user_id: str):
+    def load_or_init(self, user_id: str):
         # Получаем путь до папки с юзерами
         filepath = os.path.sep.join([constants.BASE_PATH, 'data', 'users', f'{user_id}.json'])
         # Загружаем в словарь
         obj = file_system_helper.load_from_file(filepath)
         # Спокойненько десериализуем объект
-        return self.deserialize(obj)
+        success = self.deserialize(obj)
+        # Создаем новый если не получилось
+        if not success:
+            self.user_id = user_id
+            self.settings = UserSettings()
+            self.statistics = UserStatistics()
+            self.save()
+        return success
 
     def serialize(self):
         settings = None

@@ -19,7 +19,7 @@ def test_begin(update: Update, context: CallbackContext):
     # Кандидат для метода бота get_user()
     user = User()
     print(f'Чат id{update.callback_query.message.chat_id}')
-    if not user.load(str(update.callback_query.message.chat_id)):
+    if not user.load_or_init(str(update.callback_query.message.chat_id)):
         user.user_id = update.callback_query.message.chat_id
         user.settings = UserSettings()
         user.statistics = UserStatistics()
@@ -41,9 +41,10 @@ def test_begin(update: Update, context: CallbackContext):
     number_of_question = 0
 
     # Нужно сохранить или вести счетчик по number_of_questions
-    wc = user.settings.session_words_count
-    words_for_test: List[ThemeWord] = all_words[0:wc]
-    current_word = words_for_test[number_of_question]
+    wc = int(user.settings.session_words_count)
+    print(f'Количество вопросов: {wc}')
+    #words_for_test: List[ThemeWord] = all_words[0:wc]
+    current_word = all_words[number_of_question]
 
     # Формируем слова для вопроса
     random.shuffle(all_words)
@@ -67,7 +68,7 @@ def test_begin(update: Update, context: CallbackContext):
     ])
 
     update.callback_query.message.reply_text(
-        f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {words_for_test[number_of_question].original}',
+        f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
         reply_markup=keyboard_markup)
     return states.TEST
 
@@ -79,13 +80,31 @@ def test(update: Update, context: CallbackContext):
     data = raw_data.split('_')
     result = int(data[5])
     number_of_question = int(data[0]) + 1
+
+    user = User()
+    user.load_or_init(str(update.callback_query.message.chat_id))
+    word_dict = user.statistics.remembered_words_list
+    word = data[1]
+
     if data[1] == data[2]:
         # + 1 балл в статистику
+        if word in word_dict:
+            word_dict[word] += 1
+        else:
+            word_dict.setdefault(word, 1)
+        user.save()
+
+        # и в историю
         result += 1
         pass
 
     else:
         # обнуление в статистике
+        if word in word_dict:
+            word_dict[word] = 0
+        else:
+            word_dict.setdefault(word, 0)
+        user.save()
         pass
 
     if number_of_question >= int(data[3]):

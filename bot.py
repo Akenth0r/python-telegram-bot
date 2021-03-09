@@ -22,18 +22,33 @@ class LanguageLearningBot:
             states={
                 states.CHOOSING: [
                     CallbackQueryHandler(test.test_begin, pattern=f'^{str(states.TEST)}$'),
-                    CallbackQueryHandler(settings.settings_start, pattern=f'^{str(states.SETTINGS)}$')
+                    CallbackQueryHandler(settings.settings_start, pattern=f'^{str(states.SETTINGS)}$'),
+                    CallbackQueryHandler(statistics.show_statistics, pattern=f'^{str(states.STATISTICS)}$')
                 ],
                 states.TEST: [
                     CallbackQueryHandler(test.test, pattern=f'^\w+(_\w)?'),
+                    # Заменить @ на состояния
                     CallbackQueryHandler(start.restart, pattern=f'@exit'),
                     CallbackQueryHandler(start.restart, pattern=f'@example'),
                 ],
                 states.STATISTICS: [
                     # start.restart()
+                    CallbackQueryHandler(start.restart, pattern=f'{states.EXIT}'),
                 ],
                 states.SETTINGS: [
-
+                    CallbackQueryHandler(settings.set_theme_menu, pattern=f'{states.SET_THEME}'),
+                    CallbackQueryHandler(settings.set_right_answer_count_menu, pattern=f'{states.SET_RIGHT_ANSWER_COUNT}'),
+                    CallbackQueryHandler(settings.set_session_words_count_menu, pattern=f'{states.SET_SESSION_WORDS_COUNT}'),
+                    CallbackQueryHandler(start.restart, pattern=f'{states.EXIT}'),
+                ],
+                states.SET_THEME: [
+                    CallbackQueryHandler(settings.set_theme, pattern=f'\w+'),
+                ],
+                states.SET_RIGHT_ANSWER_COUNT: [
+                    CallbackQueryHandler(settings.set_right_answer_count, pattern=f'\w+'),
+                ],
+                states.SET_SESSION_WORDS_COUNT: [
+                    CallbackQueryHandler(settings.set_session_words_count, pattern=f'\w+'),
                 ],
             },
             fallbacks=[],

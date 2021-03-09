@@ -2,12 +2,21 @@
     "user_id": 950274278,
     "settings": {
         "theme_id": "animals",
-        "right_answer_count": 1,
-        "session_words_count": 5
+        "right_answer_count": "10",
+        "session_words_count": "3"
     },
     "statistics": {
         "remembered_words_count": 0,
         "words_left": 0,
-        "remembered_words_list": []
+        "remembered_words_list": {
+            "Cheetah": 0,
+            "Camel": 777,
+            "Cat": 778,
+            "Gorilla": 1,
+            "Dog": 0,
+            "Shark": 0,
+            "Octopus": 1,
+            "Giraffe": 1
+        }
     }
 }

@@ -8,6 +8,11 @@
     "statistics": {
         "remembered_words_count": 0,
         "words_left": 0,
-        "remembered_words_list": []
+        "remembered_words_list": {
+            "Shark": 777,
+            "Giraffe": 777,
+            "Camel": 777,
+            "Dog": 777
+        }
     }
 }

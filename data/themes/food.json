@@ -1,0 +1,45 @@
+{
+  "title": "food",
+  "words": [
+    {
+      "original": "Banana",
+      "translation": "Банан"
+    },
+    {
+      "original": "Apple",
+      "translation": "Яблоко"
+    },
+    {
+      "original": "Bread",
+      "translation": "Хлеб"
+    },
+    {
+      "original": "Carrot",
+      "translation": "Морковь"
+    },
+    {
+      "original": "Onion",
+      "translation": "Лук"
+    },
+    {
+      "original": "Melon",
+      "translation": "Арбуз"
+    },
+    {
+      "original": "Sausage",
+      "translation": "Сосиски"
+    },
+    {
+      "original": "Strawberries",
+      "translation": "Земляника"
+    },
+    {
+      "original": "Fish",
+      "translation": "Рыба"
+    },
+    {
+      "original": "Egg",
+      "translation": "Яицо"
+    }
+  ]
+}
