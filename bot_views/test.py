@@ -56,13 +56,13 @@ def test_begin(update: Update, context: CallbackContext):
     # f'{number_of_question}_{current_word}_{words_to_show[0]}'
     keyboard_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(f'{words_to_show[0].translation}',
-                              callback_data=f'{number_of_question}_{current_word.original}_{words_to_show[0].original}_{wc}_{theme_id}_{0}')],
+                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{wc}_{theme_id}_{0}')],
         [InlineKeyboardButton(f'{words_to_show[1].translation}',
-                              callback_data=f'{number_of_question}_{current_word.original}_{words_to_show[1].original}_{wc}_{theme_id}_{0}')],
+                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{wc}_{theme_id}_{0}')],
         [InlineKeyboardButton(f'{words_to_show[2].translation}',
-                              callback_data=f'{number_of_question}_{current_word.original}_{words_to_show[2].original}_{wc}_{theme_id}_{0}')],
+                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{wc}_{theme_id}_{0}')],
         [InlineKeyboardButton(f'{words_to_show[3].translation}',
-                              callback_data=f'{number_of_question}_{current_word.original}_{words_to_show[3].original}_{wc}_{theme_id}_{0}')],
+                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{wc}_{theme_id}_{0}')],
         [InlineKeyboardButton(f'Показать пример', callback_data='@example'),
             InlineKeyboardButton(f'Завершить тест', callback_data='@exit')],
     ])
@@ -78,15 +78,15 @@ def test(update: Update, context: CallbackContext):
     print('Продолжаем тест')
     raw_data = update.callback_query.data
     data = raw_data.split('_')
-    result = int(data[5])
-    number_of_question = int(data[0]) + 1
+    result = int(data[6])
+    number_of_question = int(data[1]) + 1
 
     user = User()
     user.load_or_init(str(update.callback_query.message.chat_id))
     word_dict = user.statistics.remembered_words_list
-    word = data[1]
+    word = data[2]
 
-    if data[1] == data[2]:
+    if data[2] == data[3]:
         # + 1 балл в статистику
         if word in word_dict:
             word_dict[word] += 1
@@ -107,12 +107,12 @@ def test(update: Update, context: CallbackContext):
         user.save()
         pass
 
-    if number_of_question >= int(data[3]):
+    if number_of_question >= int(data[4]):
         keyboard_markup = InlineKeyboardMarkup([[InlineKeyboardButton(f'Окей', callback_data='@exit')]])
-        update.callback_query.message.reply_text( f'Ваш результат: {result} из {data[3]}', reply_markup=keyboard_markup)
+        update.callback_query.message.reply_text( f'Ваш результат: {result} из {data[4]}', reply_markup=keyboard_markup)
     else:
         # Получаем текущую тему
-        theme_id = data[4]
+        theme_id = data[5]
         current_theme: Theme = Theme()
         current_theme.load(theme_id)
         print(f'Получили тему {theme_id}')
@@ -131,20 +131,20 @@ def test(update: Update, context: CallbackContext):
         # Формируем клавиатуру
         keyboard_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton(f'{words_to_show[0].translation}',
-                                  callback_data=f'{number_of_question}_{current_word.original}_{words_to_show[0].original}_{data[3]}_{theme_id}_{result}')],
+                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{data[4]}_{theme_id}_{result}')],
             [InlineKeyboardButton(f'{words_to_show[1].translation}',
-                                  callback_data=f'{number_of_question}_{current_word.original}_{words_to_show[1].original}_{data[3]}_{theme_id}_{result}')],
+                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{data[4]}_{theme_id}_{result}')],
             [InlineKeyboardButton(f'{words_to_show[2].translation}',
-                                  callback_data=f'{number_of_question}_{current_word.original}_{words_to_show[2].original}_{data[3]}_{theme_id}_{result}')],
+                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{data[4]}_{theme_id}_{result}')],
             [InlineKeyboardButton(f'{words_to_show[3].translation}',
-                                  callback_data=f'{number_of_question}_{current_word.original}_{words_to_show[3].original}_{data[3]}_{theme_id}_{result}')],
+                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{data[4]}_{theme_id}_{result}')],
             [InlineKeyboardButton(f'Показать пример', callback_data='@example'),
              InlineKeyboardButton(f'Завершить тест', callback_data='@exit')],
         ])
 
-    update.callback_query.message.reply_text(
-        f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
-        reply_markup=keyboard_markup)
+        update.callback_query.message.reply_text(
+            f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
+            reply_markup=keyboard_markup)
     return states.TEST
 
 

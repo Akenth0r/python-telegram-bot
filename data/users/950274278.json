@@ -1,7 +1,7 @@
 {
     "user_id": 950274278,
     "settings": {
-        "theme_id": "animals",
+        "theme_id": "food",
         "right_answer_count": "10",
         "session_words_count": "3"
     },
@@ -9,14 +9,15 @@
         "remembered_words_count": 0,
         "words_left": 0,
         "remembered_words_list": {
-            "Cheetah": 0,
+            "Cheetah": 4,
             "Camel": 777,
-            "Cat": 778,
+            "Cat": 781,
             "Gorilla": 1,
-            "Dog": 0,
-            "Shark": 0,
-            "Octopus": 1,
-            "Giraffe": 1
+            "Dog": 2,
+            "Shark": 1,
+            "Octopus": 2,
+            "Giraffe": 1,
+            "Whale": 1
         }
     }
 }

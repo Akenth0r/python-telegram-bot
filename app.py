@@ -6,8 +6,8 @@ import os
 
 # https://api.telegram.org/bot1623674677:AAFNHd1PgUbzKH3YW7nUoUGXKzEePGGq3tY/setWebhook?url=https://5ac3d6c47f25.ngrok.io
 
-TOKEN = '1623674677:AAFKmVL-KyX-OmcaOBTX9aGHZ-45M59LQ_8'  # AAFNHd1PgUbzKH3YW7nUoUGXKzWePGGGq3tY
-URL = 'https://ef10ae5d294b.ngrok.io'
+TOKEN = '1623674677:AAGhGrT-8icuj1niyMnD5fntn2MmsCH7vB4'  # AAFNHd1PgUbzKH3YW7nUoUGXKzWePGGGq3tY
+URL = 'https://65b18c4d3130.ngrok.io'
 # Хитро получаем абсолютный путь (для локального сервера)
 DEBUG = False
 

@@ -26,7 +26,7 @@ class LanguageLearningBot:
                     CallbackQueryHandler(statistics.show_statistics, pattern=f'^{str(states.STATISTICS)}$')
                 ],
                 states.TEST: [
-                    CallbackQueryHandler(test.test, pattern=f'^\w+(_\w)?'),
+                    CallbackQueryHandler(test.test, pattern=f'@_\w+'),
                     # Заменить @ на состояния
                     CallbackQueryHandler(start.restart, pattern=f'@exit'),
                     CallbackQueryHandler(start.restart, pattern=f'@example'),
