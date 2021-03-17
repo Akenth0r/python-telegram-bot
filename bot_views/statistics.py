@@ -18,7 +18,7 @@ def show_statistics(update: Update, context: CallbackContext):
         if int(word_dict[word]) >= right_count:
             known_count += 1
 
-    update.callback_query.message.reply_text(f'Вы выучили {known_count} слов(а)')
+    update.callback_query.message.edit_text(f'Вы выучили {known_count} слов(а)')
 
     # Возвращаемся на главный экран
     start.restart(update)

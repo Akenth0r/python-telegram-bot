@@ -6,13 +6,15 @@ import os
 
 # https://api.telegram.org/bot1623674677:AAFNHd1PgUbzKH3YW7nUoUGXKzEePGGq3tY/setWebhook?url=https://5ac3d6c47f25.ngrok.io
 
-TOKEN = '1623674677:AAGhGrT-8icuj1niyMnD5fntn2MmsCH7vB4'  # AAFNHd1PgUbzKH3YW7nUoUGXKzWePGGGq3tY
-URL = 'https://65b18c4d3130.ngrok.io'
+TOKEN = os.getenv('TELEGRAM_TOKEN') # '1623674677:AAGhGrT-8icuj1niyMnD5fntn2MmsCH7vB4'  # AAFNHd1PgUbzKH3YW7nUoUGXKzWePGGGq3tY
+print(TOKEN)
+URL = 'https://efa07f2cd99c.ngrok.io'
 # Хитро получаем абсолютный путь (для локального сервера)
 DEBUG = False
 
 app = Flask(__name__)
 bot = LanguageLearningBot(TOKEN)
+
 
 
 @app.route(f"/{TOKEN}", methods=["GET", "POST"])

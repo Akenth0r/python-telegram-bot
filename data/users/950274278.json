@@ -17,7 +17,12 @@
             "Shark": 1,
             "Octopus": 2,
             "Giraffe": 1,
-            "Whale": 1
+            "Whale": 1,
+            "Banana": 0,
+            "Fish": 2,
+            "Carrot": 4,
+            "Sausage": 0,
+            "Strawberries": 3
         }
     }
 }

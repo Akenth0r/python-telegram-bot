@@ -9,10 +9,12 @@
         "remembered_words_count": 0,
         "words_left": 0,
         "remembered_words_list": {
-            "Shark": 777,
+            "Shark": 778,
             "Giraffe": 777,
-            "Camel": 777,
-            "Dog": 777
+            "Camel": 778,
+            "Dog": 777,
+            "Gorilla": 3,
+            "Whale": 1
         }
     }
 }

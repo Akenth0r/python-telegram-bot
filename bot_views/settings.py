@@ -16,7 +16,7 @@ def settings_start(update: Update, context: CallbackContext):
         [InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
 
-    update.callback_query.message.reply_text('Выбери что хочешь изменить:', reply_markup=keyboard_markup)
+    update.callback_query.message.edit_text('Выбери что хочешь изменить:', reply_markup=keyboard_markup)
     return states.SETTINGS
 
 
@@ -29,7 +29,7 @@ def set_theme_menu(update: Update, context: CallbackContext):
          InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
 
-    update.callback_query.message.reply_text('Темы:', reply_markup=keyboard_markup)
+    update.callback_query.message.edit_text('Темы:', reply_markup=keyboard_markup)
     return states.SET_THEME
 
 

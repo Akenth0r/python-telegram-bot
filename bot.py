@@ -18,6 +18,7 @@ class LanguageLearningBot:
 
     def _init_handlers(self):
         conv_handler = ConversationHandler(
+            #per_message=True,
             entry_points=[CommandHandler('start', start.start_command), CommandHandler('begin', start.start_command)],
             states={
                 states.CHOOSING: [

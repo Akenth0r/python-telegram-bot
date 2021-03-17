@@ -67,7 +67,7 @@ def test_begin(update: Update, context: CallbackContext):
             InlineKeyboardButton(f'Завершить тест', callback_data='@exit')],
     ])
 
-    update.callback_query.message.reply_text(
+    update.callback_query.message.edit_text(
         f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
         reply_markup=keyboard_markup)
     return states.TEST
@@ -142,9 +142,8 @@ def test(update: Update, context: CallbackContext):
              InlineKeyboardButton(f'Завершить тест', callback_data='@exit')],
         ])
 
-        update.callback_query.message.reply_text(
-            f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
-            reply_markup=keyboard_markup)
+        update.callback_query.message.edit_text(f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}', reply_markup=keyboard_markup)
+           # f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
     return states.TEST
 
 
