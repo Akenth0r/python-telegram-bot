@@ -4,7 +4,8 @@ from typing import List
 
 import constants
 import file_system_helper
-
+from sqlalchemy import *
+from sqlalchemy.orm import *
 
 # TODO: когда начнем работать с базами данных, добавить второстепенным моделям интерфейс save/load
 class UserSettings:
@@ -50,13 +51,18 @@ class UserSettings:
 
 # Статистика пользователя
 class UserStatistics:
-    def __init__(self, remembered_words_count=0, words_left=0,
-                 remembered_words_list: dict = None):
-        if remembered_words_list is None:
-            remembered_words_list = {}
-        self.words_remembered = remembered_words_count
-        self.words_left = words_left
-        self.remembered_words_list = remembered_words_list
+    # def __init__(self, remembered_words_count=0, words_left=0,
+    #              remembered_words_list: dict = None):
+    #     if remembered_words_list is None:
+    #         remembered_words_list = {}
+    #     self.words_remembered = remembered_words_count
+    #     self.words_left = words_left
+    #     self.remembered_words_list = remembered_words_list
+
+        #remembered_words_list =
+        #words_remembered =
+        #words_left = words_left
+        remembered_words_list = relationship("user_words", back_populates="user_statistics")
 
     # Преобразовать модель в словарь
     def serialize(self):
@@ -85,10 +91,14 @@ class UserStatistics:
 
 # Пользователь
 class User:
-    def __init__(self, user_id=None, settings: UserSettings = None, statistics: UserStatistics = None):
-        self.user_id = user_id
-        self.settings = settings
-        self.statistics = statistics
+    # def __init__(self, user_id=None, settings: UserSettings = None, statistics: UserStatistics = None):
+        # self.user_id = user_id
+        # self.settings = settings
+        # self.statistics = statistics
+    id = Column(Integer, primary_key=True)
+    chat_id = Column(Integer, unique=True)
+    settings = relationship("settings", uselist=False, back_populates="settings")
+    statistics = relationship("statistics", back_populates="statistics")
 
     def save(self):
         # Получаем путь до папки с юзерами

@@ -1,7 +1,7 @@
 {
     "user_id": 950274278,
     "settings": {
-        "theme_id": "food",
+        "theme_id": "animals",
         "right_answer_count": "10",
         "session_words_count": "3"
     },
@@ -9,20 +9,26 @@
         "remembered_words_count": 0,
         "words_left": 0,
         "remembered_words_list": {
-            "Cheetah": 4,
-            "Camel": 777,
+            "Cheetah": 0,
+            "Camel": 0,
             "Cat": 781,
-            "Gorilla": 1,
-            "Dog": 2,
-            "Shark": 1,
+            "Gorilla": 0,
+            "Dog": 3,
+            "Shark": 0,
             "Octopus": 2,
-            "Giraffe": 1,
-            "Whale": 1,
-            "Banana": 0,
-            "Fish": 2,
-            "Carrot": 4,
+            "Giraffe": 0,
+            "Whale": 0,
+            "Banana": 4,
+            "Fish": 0,
+            "Carrot": 0,
             "Sausage": 0,
-            "Strawberries": 3
+            "Strawberries": 6,
+            "Egg": 1,
+            "Apple": 4,
+            "Melon": 0,
+            "Bread": 0,
+            "Onion": 4,
+            "Woodpecker": 0
         }
     }
 }
