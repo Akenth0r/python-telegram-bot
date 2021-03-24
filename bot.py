@@ -1,5 +1,5 @@
 import telegram
-from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters, CallbackQueryHandler, PicklePersistence
+from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters, CallbackQueryHandler, PicklePersistence, MessageHandler
 import bot_views.start as start
 import bot_views.settings as settings
 import bot_views.statistics as statistics
