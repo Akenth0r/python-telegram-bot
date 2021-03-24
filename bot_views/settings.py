@@ -15,97 +15,85 @@ def settings_start(update: Update, context: CallbackContext):
         [InlineKeyboardButton(f'Необходимое количество правильных ответов', callback_data=f'{states.SET_RIGHT_ANSWER_COUNT}')],
         [InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
-
+    update.callback_query.answer()
     update.callback_query.message.edit_text('Выбери что хочешь изменить:', reply_markup=keyboard_markup)
-    return states.SETTINGS
 
 
 def set_theme_menu(update: Update, context: CallbackContext):
     # Формируем клавиатуру
     keyboard_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(f'Животные', callback_data='animals')],
-        [InlineKeyboardButton(f'Еда', callback_data='food')],
+        [InlineKeyboardButton(f'Животные', callback_data='@th_animals')],
+        [InlineKeyboardButton(f'Еда', callback_data='@th_food')],
         [InlineKeyboardButton(f'Назад', callback_data=f'{states.SETTINGS}'),
          InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
-
+    update.callback_query.answer()
     update.callback_query.message.edit_text('Темы:', reply_markup=keyboard_markup)
-    return states.SET_THEME
 
 
 def set_right_answer_count_menu(update: Update, context: CallbackContext):
     # Формируем клавиатуру
     keyboard_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(f'1', callback_data='1'),
-         InlineKeyboardButton(f'3', callback_data='3'),
-         InlineKeyboardButton(f'5', callback_data='5')],
-        [InlineKeyboardButton(f'7', callback_data='7'),
-         InlineKeyboardButton(f'10', callback_data='10'),
-         InlineKeyboardButton(f'15', callback_data='15')],
+        [InlineKeyboardButton(f'1', callback_data='@ac_1'),
+         InlineKeyboardButton(f'3', callback_data='@ac_3'),
+         InlineKeyboardButton(f'5', callback_data='@ac_5')],
+        [InlineKeyboardButton(f'7', callback_data='@ac_7'),
+         InlineKeyboardButton(f'10', callback_data='@ac_10'),
+         InlineKeyboardButton(f'15', callback_data='@ac_15')],
         [InlineKeyboardButton(f'Назад', callback_data=f'{states.SETTINGS}'),
          InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
-
+    update.callback_query.answer()
     update.callback_query.message.reply_text('Количество правильных ответов:', reply_markup=keyboard_markup)
-    return states.SET_RIGHT_ANSWER_COUNT
 
 
 def set_session_words_count_menu(update: Update, context: CallbackContext):
     # Формируем клавиатуру
     keyboard_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(f'1', callback_data='1'),
-         InlineKeyboardButton(f'3', callback_data='3'),
-         InlineKeyboardButton(f'5', callback_data='5')],
-        [InlineKeyboardButton(f'7', callback_data='7'),
-         InlineKeyboardButton(f'10', callback_data='10'),
-         InlineKeyboardButton(f'15', callback_data='15')],
+        [InlineKeyboardButton(f'1', callback_data='@wc_1'),
+         InlineKeyboardButton(f'3', callback_data='@wc_3'),
+         InlineKeyboardButton(f'5', callback_data='@wc_5')],
+        [InlineKeyboardButton(f'7', callback_data='@wc_7'),
+         InlineKeyboardButton(f'10', callback_data='@wc_10'),
+         InlineKeyboardButton(f'15', callback_data='@wc_15')],
         [InlineKeyboardButton(f'Назад', callback_data=f'{states.SETTINGS}'),
          InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
-
+    update.callback_query.answer()
     update.callback_query.message.reply_text('Количество вопросов в тесте:', reply_markup=keyboard_markup)
-    return states.SET_SESSION_WORDS_COUNT
 
 
 def set_theme(update: Update, context: CallbackContext):
     # Получаем или создаем пользователя
     user = get_user(update.callback_query.message.chat_id)
-    print(f'Чат id{update.callback_query.message.chat_id}')
 
     # Изменяем настройки пользователя
-    user.settings.theme_id = update.callback_query.data
+    user.settings.theme_id = update.callback_query.data.split('_')[1]
     user.save()
-
+    update.callback_query.answer()
     # Возвращаемся на главный экран
     start.restart(update)
-    return states.CHOOSING
 
 
 def set_right_answer_count(update: Update, context: CallbackContext):
     # Получаем или создаем пользователя
     user = get_user(update.callback_query.message.chat_id)
-    print(f'Чат id{update.callback_query.message.chat_id}')
 
     # Изменяем настройки пользователя
-    user.settings.right_answer_count = update.callback_query.data
-    print('Изменили right answer')
+    user.settings.right_answer_count = update.callback_query.data.split('_')[1]
     user.save()
-
+    update.callback_query.answer()
     # Возвращаемся на главный экран
     start.restart(update)
-    return states.CHOOSING
 
 
 def set_session_words_count(update: Update, context: CallbackContext):
     # Получаем или создаем пользователя
     user = get_user(update.callback_query.message.chat_id)
-    print(f'Чат id{update.callback_query.message.chat_id}')
 
     # Изменяем настройки пользователя
-    user.settings.session_words_count = update.callback_query.data
-    print('Изменили session words')
+    user.settings.session_words_count = update.callback_query.data.split('_')[1]
     user.save()
-
+    update.callback_query.answer()
     # Возвращаемся на главный экран
     start.restart(update)
-    return states.CHOOSING

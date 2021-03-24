@@ -16,9 +16,8 @@ def start_command(update: Update, context: CallbackContext):
         [InlineKeyboardButton('Настройки', callback_data=str(SETTINGS))],
         # [InlineKeyboardButton('Выдача лоли', callback_data=str(777))],
     ])
-
+#    update.callback_query.answer()
     update.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)
-    return CHOOSING
 
 
 def restart(update: Update, context: CallbackContext = None):
@@ -27,5 +26,5 @@ def restart(update: Update, context: CallbackContext = None):
         [InlineKeyboardButton('Статистика', callback_data=str(STATISTICS))],
         [InlineKeyboardButton('Настройки', callback_data=str(SETTINGS))],
     ])
+    update.callback_query.answer()
     update.callback_query.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)
-    return CHOOSING

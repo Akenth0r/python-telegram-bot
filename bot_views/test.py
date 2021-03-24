@@ -22,19 +22,16 @@ def test_begin(update: Update, context: CallbackContext):
     # Вот тут мы подгружаем слова по теме и считаем число правильных ответов
     theme_id = user.settings.theme_id
     current_theme = session.get(Theme, theme_id)
-    print(f'Получили тему {theme_id}')
 
     # Получаем все слова из темы
     all_words: List[ThemeWord] = current_theme.words
     random.shuffle(all_words)
-    print(f'Получили слова: {len(all_words)}')
 
     # Номер вопроса
     number_of_question = 0
 
     # Нужно сохранить или вести счетчик по number_of_questions
     wc = int(user.settings.session_words_count)
-    print(f'Количество вопросов: {wc}')
     # words_for_test: List[ThemeWord] = all_words[0:wc]
     current_word = all_words[number_of_question]
 
@@ -42,7 +39,6 @@ def test_begin(update: Update, context: CallbackContext):
     random.shuffle(all_words)
     words_to_show = all_words[0:3]
     words_to_show.append(current_word)
-    print(f'Должно быть 4 слова: {len(words_to_show)}')
     random.shuffle(words_to_show)
     # {words_for_test}_
     # f'{number_of_question}_{current_word}_{words_to_show[0]}'
@@ -58,17 +54,16 @@ def test_begin(update: Update, context: CallbackContext):
         [InlineKeyboardButton(f'Показать пример', callback_data='@example'),
          InlineKeyboardButton(f'Завершить тест', callback_data='@exit')],
     ])
-
+    update.callback_query.answer()
     update.callback_query.message.edit_text(
         f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
         reply_markup=keyboard_markup)
-    return states.TEST
 
 
 def test(update: Update, context: CallbackContext):
     # update.callback_query.data
-    print('Продолжаем тест')
     raw_data = update.callback_query.data
+    update.callback_query.answer()
     data = raw_data.split('_')
     result = int(data[6])
     number_of_question = int(data[1]) + 1
@@ -115,7 +110,6 @@ def test(update: Update, context: CallbackContext):
             word_statistics.right_answer_count = 0
             session.add(word_statistics)
             session.commit()
-
     if number_of_question >= int(data[4]):
         keyboard_markup = InlineKeyboardMarkup([[InlineKeyboardButton(f'Окей', callback_data='@exit')]])
         update.callback_query.message.reply_text(f'Ваш результат: {result} из {data[4]}', reply_markup=keyboard_markup)
@@ -123,7 +117,6 @@ def test(update: Update, context: CallbackContext):
         # Получаем текущую тему
         theme_id = data[5]
         current_theme = session.get(Theme, theme_id)
-        print(f'Получили тему {theme_id}')
 
         # Получаем все слова из темы
         all_words: List[ThemeWord] = current_theme.words
@@ -133,7 +126,6 @@ def test(update: Update, context: CallbackContext):
         current_word = all_words[0]
         words_to_show = all_words[1:4]
         words_to_show.append(current_word)
-        print(f'Должно быть 4 слова: {len(words_to_show)}')
         random.shuffle(words_to_show)
 
         # Формируем клавиатуру
@@ -154,7 +146,6 @@ def test(update: Update, context: CallbackContext):
             f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
             reply_markup=keyboard_markup)
         # f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
-    return states.TEST
 
 
 def test_end(update: Update, context: CallbackContext):

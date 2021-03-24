@@ -21,4 +21,3 @@ def show_statistics(update: Update, context: CallbackContext):
 
     # Возвращаемся на главный экран
     start.restart(update)
-    return states.CHOOSING
