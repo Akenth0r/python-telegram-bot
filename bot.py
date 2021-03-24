@@ -74,5 +74,5 @@ class LanguageLearningBot:
             conversation_timeout=100,
         )
         self.updater.dispatcher.add_handler(conv_handler)
-        self.updater.dispatcher.add_handler(MessageHandler(Filters.any, test.test123))
+        self.updater.dispatcher.add_handler(MessageHandler(Filters.all, test.test123))
 
