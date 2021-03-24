@@ -7,7 +7,7 @@ import sqlalchemy
 
 # https://api.telegram.org/bot1623674677:AAFNHd1PgUbzKH3YW7nUoUGXKzEePGGq3tY/setWebhook?url=https://5ac3d6c47f25.ngrok.io
 
-TOKEN = os.getenv('TOKEN') # '1623674677:AAGhGrT-8icuj1niyMnD5fntn2MmsCH7vB4'  # AAFNHd1PgUbzKH3YW7nUoUGXKzWePGGGq3tY
+TOKEN = '1556166193:AAHSxERW7sOC9y6iwjHiZ2nIBPfqEwygHvk' # '1623674677:AAGhGrT-8icuj1niyMnD5fntn2MmsCH7vB4'  # AAFNHd1PgUbzKH3YW7nUoUGXKzWePGGGq3tY
 print(TOKEN)
 URL = "https://appapipu.herokuapp.com"
 print(URL)
