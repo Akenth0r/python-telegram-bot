@@ -9,7 +9,7 @@ import sqlalchemy
 
 TOKEN = os.getenv('TOKEN') # '1623674677:AAGhGrT-8icuj1niyMnD5fntn2MmsCH7vB4'  # AAFNHd1PgUbzKH3YW7nUoUGXKzWePGGGq3tY
 print(TOKEN)
-URL = os.getenv('URL')
+URL = https://appapipu.herokuapp.com
 print(URL)
 # Хитро получаем абсолютный путь (для локального сервера)
 DEBUG = False
