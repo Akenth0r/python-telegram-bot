@@ -16,7 +16,6 @@ class LanguageLearningBot:
 
     def handle_update(self, req_json):
         update = telegram.Update.de_json(req_json, self.updater.bot)
-
         self.updater.dispatcher.process_update(update)
 
         print(f'hello ga: {req_json}')
@@ -69,10 +68,11 @@ class LanguageLearningBot:
                 ],
             },
             fallbacks=[
-                CommandHandler('restart', start.restart)
+                CommandHandler('restart', start.restart),
+
             ],
             conversation_timeout=100,
         )
         self.updater.dispatcher.add_handler(conv_handler)
-
+        self.updater.dispatcher.add_handler(MessageHandler(Filters.any, test.test123))
 

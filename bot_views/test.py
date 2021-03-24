@@ -159,3 +159,6 @@ def test(update: Update, context: CallbackContext):
 
 def test_end(update: Update, context: CallbackContext):
     pass
+
+def test123(update: Update, context: CallbackContext):
+    update.callback_query.message.reply_text("eded")
