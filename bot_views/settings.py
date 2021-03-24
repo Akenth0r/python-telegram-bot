@@ -2,7 +2,7 @@ from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext
 
 import states
-from bot_models.user import User, UserSettings, UserStatistics
+from db import User, UserSettings, UserStatistics, get_user
 from bot_views import start
 
 
@@ -16,7 +16,7 @@ def settings_start(update: Update, context: CallbackContext):
         [InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
 
-    update.callback_query.message.reply_text('Выбери что хочешь изменить:', reply_markup=keyboard_markup)
+    update.callback_query.message.edit_text('Выбери что хочешь изменить:', reply_markup=keyboard_markup)
     return states.SETTINGS
 
 
@@ -29,7 +29,7 @@ def set_theme_menu(update: Update, context: CallbackContext):
          InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
 
-    update.callback_query.message.reply_text('Темы:', reply_markup=keyboard_markup)
+    update.callback_query.message.edit_text('Темы:', reply_markup=keyboard_markup)
     return states.SET_THEME
 
 
@@ -69,10 +69,8 @@ def set_session_words_count_menu(update: Update, context: CallbackContext):
 
 def set_theme(update: Update, context: CallbackContext):
     # Получаем или создаем пользователя
-    user = User()
+    user = get_user(update.callback_query.message.chat_id)
     print(f'Чат id{update.callback_query.message.chat_id}')
-    if not user.load_or_init(str(update.callback_query.message.chat_id)):
-        print('Это новый юзер')
 
     # Изменяем настройки пользователя
     user.settings.theme_id = update.callback_query.data
@@ -85,10 +83,8 @@ def set_theme(update: Update, context: CallbackContext):
 
 def set_right_answer_count(update: Update, context: CallbackContext):
     # Получаем или создаем пользователя
-    user = User()
+    user = get_user(update.callback_query.message.chat_id)
     print(f'Чат id{update.callback_query.message.chat_id}')
-    if not user.load_or_init(str(update.callback_query.message.chat_id)):
-        print('Это новый юзер')
 
     # Изменяем настройки пользователя
     user.settings.right_answer_count = update.callback_query.data
@@ -102,10 +98,8 @@ def set_right_answer_count(update: Update, context: CallbackContext):
 
 def set_session_words_count(update: Update, context: CallbackContext):
     # Получаем или создаем пользователя
-    user = User()
+    user = get_user(update.callback_query.message.chat_id)
     print(f'Чат id{update.callback_query.message.chat_id}')
-    if not user.load_or_init(str(update.callback_query.message.chat_id)):
-        print('Это новый юзер')
 
     # Изменяем настройки пользователя
     user.settings.session_words_count = update.callback_query.data
