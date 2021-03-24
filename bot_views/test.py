@@ -162,4 +162,4 @@ def test_end(update: Update, context: CallbackContext):
 
 
 def test123(update: Update, context: CallbackContext):
-    update.callback_query.message.reply_text("eded")
+    update.message.reply_text("eded")
