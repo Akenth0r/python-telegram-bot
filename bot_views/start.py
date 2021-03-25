@@ -5,7 +5,7 @@ from db import User, UserSettings, UserStatistics, session, get_user
 from states import TEST, STATISTICS, SETTINGS, CHOOSING
 
 
-def start_command(update: Update, context: CallbackContext):
+def start_command(update: Update):
     # Запомнить пользователя, если не запомнен
     user = get_user(update.message.chat_id)
 

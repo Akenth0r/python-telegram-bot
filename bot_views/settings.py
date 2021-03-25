@@ -11,8 +11,8 @@ def settings_start(update: Update, context: CallbackContext):
     # Формируем клавиатуру
     keyboard_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(f'Тему', callback_data=f'{states.SET_THEME}')],
-        [InlineKeyboardButton(f'Количество вопросов в тесте', callback_data=f'{states.SET_SESSION_WORDS_COUNT}')],
-        [InlineKeyboardButton(f'Необходимое количество правильных ответов', callback_data=f'{states.SET_RIGHT_ANSWER_COUNT}')],
+        [InlineKeyboardButton(f'Количество вопросов в тесте', callback_data=f'{states.SET_SESSION_WORDS_MENU}')],
+        [InlineKeyboardButton(f'Необходимое количество правильных ответов', callback_data=f'{states.SET_RIGHT_ANSWER_MENU}')],
         [InlineKeyboardButton(f'На главную', callback_data=f'{states.EXIT}')],
     ])
     update.callback_query.answer()
