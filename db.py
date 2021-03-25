@@ -82,6 +82,7 @@ def get_user(id):
         user.id = id
         settings = UserSettings()
         settings.user_id = user.id
+        settings.theme_id = 'animals'
         statistics = UserStatistics()
         statistics.user_id = user.id
         session.add(user)
