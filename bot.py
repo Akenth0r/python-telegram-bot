@@ -31,7 +31,7 @@ class LanguageLearningBot:
             str(states.SET_RIGHT_ANSWER_MENU): settings.set_right_answer_count_menu,
             str(states.SET_SESSION_WORDS_MENU): settings.set_session_words_count_menu,
             '@exit': start.restart,
-            '@example': start.restart,
+            '@example': test.example,
             '@': test.test,
             '@ac': settings.set_right_answer_count,
             '@wc': settings.set_session_words_count,

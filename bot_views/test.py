@@ -139,10 +139,18 @@ def test(update, bot_instance):
                                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{data[4]}_{theme_id}_{result}')],
             [bot_instance.inline_keyboard_button(f'{words_to_show[3].translation}',
                                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{data[4]}_{theme_id}_{result}')],
-            [bot_instance.inline_keyboard_button(f'Показать пример', callback_data='@example'),
+            [bot_instance.inline_keyboard_button(f'Показать пример', callback_data=f'@example_{current_word.id}'),
              bot_instance.inline_keyboard_button(f'Завершить тест', callback_data='@exit')],
         ])
 
         bot_instance.edit_message_text(chat_id, message_id=message_id,
                                        text=f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
                                        reply_markup=keyboard_markup)
+
+
+def example(update, bot_instance):
+    session = Session()
+    raw_data = update['callback_query']['data']
+    data = raw_data.split('_')
+    word = session.query(ThemeWord).get(data[1])
+    bot_instance.answer_callback_query(update['callback_query']['id'], text=f"{word.example}", show_alert=True)
