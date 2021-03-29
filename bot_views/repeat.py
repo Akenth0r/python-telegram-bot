@@ -15,7 +15,7 @@ def notify(update, bot_instance):
 
 def repeat_after(update, bot_instance):
     chat_id = update['callback_query']['message']['chat']['id']
-    message_id = update['callback_query']['message_id']
+    message_id = update['callback_query']['message']['message_id']
     user = get_user(update['callback_query']['message']['chat']['id'])
     user.last_session = datetime.utcnow()
     user.save()
@@ -23,4 +23,4 @@ def repeat_after(update, bot_instance):
                                    text=f'Отлично, напомню тебе через {repeat_config.USER_REPEAT_PERIOD} минут!')
 
 def repeat(update, bot_instance):
-    pass
+    bot_instance.send_message(update['message']['chat']['id'], 'Функционал в разработке')
