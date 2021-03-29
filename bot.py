@@ -6,6 +6,8 @@ import bot_views.test as test
 import states
 import json
 
+from bot_views import repeat
+
 
 class LanguageLearningBot:
     def __init__(self, token):
@@ -20,6 +22,9 @@ class LanguageLearningBot:
         if 'message' in update:
             if 'text' in update['message'] and update['message']['text'] == '/start':
                 start.start_command(update, self)
+            # Тестовая штучка
+            if 'text' in update['message'] and update['message']['text'] == '/repeat':
+                repeat.notify(update, self)
             return
 
         state_map = {
@@ -36,6 +41,8 @@ class LanguageLearningBot:
             '@ac': settings.set_right_answer_count,
             '@wc': settings.set_session_words_count,
             '@th': settings.set_theme,
+            '@repeat': repeat.repeat,
+            '@repeatAfter': repeat.repeat_after,
         }
 
         if 'callback_query' in update:
