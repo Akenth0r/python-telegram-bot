@@ -1,13 +1,13 @@
 from sqlalchemy import *  # create_engine, Column, Integer
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker, scoped_session
+from sqlalchemy.pool import NullPool
 
 URI = 'postgresql://pteegqukkuhdya:63913c9f332b517edeb9b86bb0f6ccefecb5cb74f9d542bf331c01b5fe429d87@ec2-54-155-87-214.eu-west-1.compute.amazonaws.com:5432/dc3q6c1898ed1j'
 
 engine = create_engine(URI)
 
 base = declarative_base()
-Session = sessionmaker(bind=engine)
-session = Session()
+Session = scoped_session(sessionmaker(bind=engine))
 
 
 class UserSettings(base):
@@ -49,6 +49,7 @@ class User(base):
     statistics = relationship("UserStatistics", uselist=False, back_populates="user")
 
     def save(self):
+        session = Session()
         session.add(self)
         session.commit()
 
@@ -71,11 +72,13 @@ class Theme(base):
     words = relationship("ThemeWord")
 
     def add_word(self, word: ThemeWord):
+        session = Session()
         session.add(word)
         session.commit()
 
 
 def get_user(id):
+    session = Session()
     user = session.query(User).get(id)
     if not user:
         user = User()
@@ -90,6 +93,5 @@ def get_user(id):
         session.add(statistics)
         session.commit()
     return user
-
 
 base.metadata.create_all(engine)

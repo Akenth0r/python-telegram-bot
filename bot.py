@@ -1,28 +1,25 @@
-import telegram
-from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters, CallbackQueryHandler, PicklePersistence
+import requests
 import bot_views.start as start
 import bot_views.settings as settings
 import bot_views.statistics as statistics
 import bot_views.test as test
 import states
+import json
 
 
 class LanguageLearningBot:
     def __init__(self, token):
-        #persistence = PicklePersistence('langbot')
-        self.updater = Updater(token, use_context=True)
-        self._init_handlers()
-        #self.updater.start_polling()
+        self.token = token
+        self._api_url = f'https://api.telegram.org/bot{token}'
 
-    def handle_update(self, req_json):
-        update: telegram.Update = telegram.Update.de_json(req_json, self.updater.bot)
+    def handle_update(self, update):
 
-        #self.updater.dispatcher.process_update(update)
+        # self.updater.dispatcher.process_update(update)
         # if update['callback_query'] != None:
         #     print(update['callback_query']['message'])
-        if update.message is not None:
-            if update.message.text == '/start':
-                start.start_command(update)
+        if 'message' in update:
+            if 'text' in update['message'] and update['message']['text'] == '/start':
+                start.start_command(update, self)
             return
 
         state_map = {
@@ -41,36 +38,92 @@ class LanguageLearningBot:
             '@th': settings.set_theme,
         }
 
-        if update.callback_query is not None:
-            #update.callback_query.answer('Подожди красавчик (лабу примите, пж)')
-            info = update.callback_query.data.split('_')
+        if 'callback_query' in update:
+            # update.callback_query.answer('Подожди красавчик (лабу примите, пж)')
+            info = update['callback_query']['data'].split('_')
             key = info[0]
-            state_map[key](update, None)
-       # print(update.callback_query.message)
+            state_map[key](update, self)
 
+    # print(update.callback_query.message)
 
     def _init_handlers(self):
-        disp = self.updater.dispatcher
-        #disp.add_handler(CommandHandler('start', start.start_command))
-        #disp.add_handler(CallbackQueryHandler(test.test_begin, pattern=f'^{str(states.TEST)}$'))
-        disp.add_handler(CallbackQueryHandler(test.test, pattern=f'@_\w+'))
-        disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'@exit'))
-        disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'@example'))
+        pass
+        # disp = self.updater.dispatcher
+        # #disp.add_handler(CommandHandler('start', start.start_command))
+        # #disp.add_handler(CallbackQueryHandler(test.test_begin, pattern=f'^{str(states.TEST)}$'))
+        # disp.add_handler(CallbackQueryHandler(test.test, pattern=f'@_\w+'))
+        # disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'@exit'))
+        # disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'@example'))
+        #
+        # # Settings
+        # #disp.add_handler(CallbackQueryHandler(settings.settings_start, pattern=f'^{str(states.SETTINGS)}$'))
+        # # I changed my mind
+        # #disp.add_handler(CallbackQueryHandler(settings.set_theme_menu, pattern=f'{states.SET_THEME}'))
+        # # disp.add_handler(CallbackQueryHandler(settings.set_right_answer_count_menu,
+        # #                      pattern=f'{states.SET_RIGHT_ANSWER_COUNT}'))
+        # # disp.add_handler(CallbackQueryHandler(settings.set_session_words_count_menu,
+        # #                      pattern=f'{states.SET_SESSION_WORDS_COUNT}'))
+        # disp.add_handler(CallbackQueryHandler(settings.set_right_answer_count, pattern=f'@ac_\w+'))
+        # disp.add_handler(CallbackQueryHandler(settings.set_session_words_count, pattern=f'@wc_\w+'))
+        # disp.add_handler(CallbackQueryHandler(settings.set_theme, pattern=f'@th_\w+'))
+        # #disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'{states.EXIT}'))
+        #
+        # disp.add_handler(CallbackQueryHandler(statistics.show_statistics, pattern=f'^{str(states.STATISTICS)}$'))
 
-        # Settings
-        #disp.add_handler(CallbackQueryHandler(settings.settings_start, pattern=f'^{str(states.SETTINGS)}$'))
-        # I changed my mind
-        #disp.add_handler(CallbackQueryHandler(settings.set_theme_menu, pattern=f'{states.SET_THEME}'))
-        # disp.add_handler(CallbackQueryHandler(settings.set_right_answer_count_menu,
-        #                      pattern=f'{states.SET_RIGHT_ANSWER_COUNT}'))
-        # disp.add_handler(CallbackQueryHandler(settings.set_session_words_count_menu,
-        #                      pattern=f'{states.SET_SESSION_WORDS_COUNT}'))
-        disp.add_handler(CallbackQueryHandler(settings.set_right_answer_count, pattern=f'@ac_\w+'))
-        disp.add_handler(CallbackQueryHandler(settings.set_session_words_count, pattern=f'@wc_\w+'))
-        disp.add_handler(CallbackQueryHandler(settings.set_theme, pattern=f'@th_\w+'))
-        #disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'{states.EXIT}'))
+    def set_webhook(self, url):
+        data = {'url': url}
 
-        disp.add_handler(CallbackQueryHandler(statistics.show_statistics, pattern=f'^{str(states.STATISTICS)}$'))
+        return requests.post(f'{self._api_url}/setWebhook', data=data)
 
+    def send_message(self, chat_id, text, reply_to_message_id=None, reply_markup=None):
+        data = {
+            'chat_id': chat_id,
+            'text': text,
+            'reply_markup': reply_markup,
+            'reply_to_message_id': None,
+        }
 
+        return requests.post(f'{self._api_url}/sendMessage', data=data)
 
+    def answer_callback_query(self, callback_query_id, text=None, show_alert=False, url=None, cache_time=0):
+        data = {
+            'callback_query_id': callback_query_id,
+            'text': text,
+            'show_alert': show_alert,
+            'url': url,
+            'cache_time': cache_time,
+        }
+
+        return requests.post(f'{self._api_url}/answerCallbackQuery', data=data)
+
+    def edit_message_text(self, chat_id, message_id=None, inline_message_id=None, text=None, reply_markup=None):
+        data = {
+            'chat_id': chat_id,
+            'message_id': message_id,
+            'inline_message_id': inline_message_id,
+            'text': text,
+            'reply_markup': reply_markup,
+        }
+
+        return requests.post(f'{self._api_url}/editMessageText', data=data)
+
+    def edit_message_reply_markup(self, chat_id, message_id=None, inline_message_id=None, reply_markup=None):
+        data = {
+            'chat_id': chat_id,
+            'message_id': message_id,
+            'inline_message_id': inline_message_id,
+            'reply_markup': reply_markup,
+        }
+
+        return requests.post(f'{self._api_url}/editMessageReplyMarkup')
+
+    def inline_keyboard_markup(self, buttons: list):
+        return json.dumps({
+            'inline_keyboard': buttons,
+        })
+
+    def inline_keyboard_button(self, text, callback_data):
+        return {
+            'text': text,
+            'callback_data': callback_data,
+        }

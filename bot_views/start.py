@@ -1,30 +1,30 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import CallbackContext
-
-from db import User, UserSettings, UserStatistics, session, get_user
+from db import User, UserSettings, UserStatistics, Session, get_user
 from states import TEST, STATISTICS, SETTINGS, CHOOSING
+import json
 
 
-def start_command(update: Update):
+def start_command(update, bot_instance):
     # Запомнить пользователя, если не запомнен
-    user = get_user(update.message.chat_id)
+    user = get_user(update['message']['chat']['id'])
 
-
-    keyboard_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton('Начать тест', callback_data=str(TEST))],
-        [InlineKeyboardButton('Статистика', callback_data=str(STATISTICS))],
-        [InlineKeyboardButton('Настройки', callback_data=str(SETTINGS))],
-        # [InlineKeyboardButton('Выдача лоли', callback_data=str(777))],
+    keyboard_markup = bot_instance.inline_keyboard_markup([
+        [bot_instance.inline_keyboard_button('Начать тест', callback_data=str(TEST))],
+        [bot_instance.inline_keyboard_button('Статистика', callback_data=str(STATISTICS))],
+        [bot_instance.inline_keyboard_button('Настройки', callback_data=str(SETTINGS))],
     ])
-#    update.callback_query.answer()
-    update.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)
+
+    bot_instance.send_message(update['message']['chat']['id'], 'Привет!\nВыбери, что нужно сделать.',
+                              reply_to_message_id=update['message']['message_id'], reply_markup=keyboard_markup)
 
 
-def restart(update: Update, context: CallbackContext = None):
-    keyboard_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton('Начать тест', callback_data=str(TEST))],
-        [InlineKeyboardButton('Статистика', callback_data=str(STATISTICS))],
-        [InlineKeyboardButton('Настройки', callback_data=str(SETTINGS))],
+def restart(update, bot_instance):
+    keyboard_markup = bot_instance.inline_keyboard_markup([
+        [bot_instance.inline_keyboard_button('Начать тест', callback_data=str(TEST))],
+        [bot_instance.inline_keyboard_button('Статистика', callback_data=str(STATISTICS))],
+        [bot_instance.inline_keyboard_button('Настройки', callback_data=str(SETTINGS))],
     ])
-    update.callback_query.answer()
-    update.callback_query.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)
+    bot_instance.answer_callback_query(update['callback_query']['id'])
+    bot_instance.send_message(update['callback_query']['message']['chat']['id'], 'Привет!\nВыбери, что нужно сделать.',
+                              reply_to_message_id=update['callback_query']['message']['message_id'], reply_markup=keyboard_markup)
+    # bot.send_message(update['callback'])
+    # update.callback_query.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)

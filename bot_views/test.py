@@ -1,11 +1,7 @@
 from typing import List
-
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import CallbackContext, ConversationHandler
-
 import states
 import random
-from db import Theme, ThemeWord, get_user, session, WordStatistics
+from db import Theme, ThemeWord, get_user, WordStatistics, Session
 
 from db import User, UserSettings, UserStatistics
 
@@ -15,9 +11,12 @@ words_for_test = []
 
 # theme_name = 'animals'
 
-def test_begin(update: Update, context: CallbackContext):
-    # Кандидат для метода бота get_user()
-    user = get_user(update.callback_query.message.chat_id)
+def test_begin(update, bot_instance):
+    session = Session()
+    chat_id = update['callback_query']['message']['chat']['id']
+    message_id = update['callback_query']['message']['message_id']
+    user = get_user(chat_id)
+    bot_instance.answer_callback_query(update['callback_query']['id'])
 
     # Вот тут мы подгружаем слова по теме и считаем число правильных ответов
     theme_id = user.settings.theme_id
@@ -42,33 +41,33 @@ def test_begin(update: Update, context: CallbackContext):
     random.shuffle(words_to_show)
     # {words_for_test}_
     # f'{number_of_question}_{current_word}_{words_to_show[0]}'
-    keyboard_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(f'{words_to_show[0].translation}',
-                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{wc}_{theme_id}_{0}')],
-        [InlineKeyboardButton(f'{words_to_show[1].translation}',
-                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{wc}_{theme_id}_{0}')],
-        [InlineKeyboardButton(f'{words_to_show[2].translation}',
-                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{wc}_{theme_id}_{0}')],
-        [InlineKeyboardButton(f'{words_to_show[3].translation}',
-                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{wc}_{theme_id}_{0}')],
-        [InlineKeyboardButton(f'Показать пример', callback_data='@example'),
-         InlineKeyboardButton(f'Завершить тест', callback_data='@exit')],
+    keyboard_markup = bot_instance.inline_keyboard_markup([
+        [bot_instance.inline_keyboard_button(f'{words_to_show[0].translation}',
+                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{wc}_{theme_id}_{0}')],
+        [bot_instance.inline_keyboard_button(f'{words_to_show[1].translation}',
+                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{wc}_{theme_id}_{0}')],
+        [bot_instance.inline_keyboard_button(f'{words_to_show[2].translation}',
+                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{wc}_{theme_id}_{0}')],
+        [bot_instance.inline_keyboard_button(f'{words_to_show[3].translation}',
+                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{wc}_{theme_id}_{0}')],
+        [bot_instance.inline_keyboard_button(f'Показать пример', callback_data='@example'),
+         bot_instance.inline_keyboard_button(f'Завершить тест', callback_data='@exit')],
     ])
-    update.callback_query.answer()
-    update.callback_query.message.edit_text(
-        f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
-        reply_markup=keyboard_markup)
+    bot_instance.edit_message_text(chat_id, message_id=message_id, reply_markup=keyboard_markup,
+                                   text=f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}')
 
 
-def test(update: Update, context: CallbackContext):
+def test(update, bot_instance):
+    session = Session()
     # update.callback_query.data
-    raw_data = update.callback_query.data
-    update.callback_query.answer()
+    chat_id = update['callback_query']['message']['chat']['id']
+    message_id = update['callback_query']['message']['message_id']
+    raw_data = update['callback_query']['data']
     data = raw_data.split('_')
     result = int(data[6])
     number_of_question = int(data[1]) + 1
-
-    user = get_user(update.callback_query.message.chat_id)
+    bot_instance.answer_callback_query(update['callback_query']['id'])
+    user = get_user(chat_id)
     word_dict = user.statistics.remembered_words
     word = data[2]
 
@@ -111,8 +110,10 @@ def test(update: Update, context: CallbackContext):
             session.add(word_statistics)
             session.commit()
     if number_of_question >= int(data[4]):
-        keyboard_markup = InlineKeyboardMarkup([[InlineKeyboardButton(f'Окей', callback_data='@exit')]])
-        update.callback_query.message.reply_text(f'Ваш результат: {result} из {data[4]}', reply_markup=keyboard_markup)
+        keyboard_markup = bot_instance.inline_keyboard_markup(
+            [[bot_instance.inline_keyboard_button(f'Окей', callback_data='@exit')]])
+        bot_instance.send_message(chat_id, f'Ваш результат: {result} из {data[4]}',
+                                  reply_markup=keyboard_markup)
     else:
         # Получаем текущую тему
         theme_id = data[5]
@@ -129,24 +130,19 @@ def test(update: Update, context: CallbackContext):
         random.shuffle(words_to_show)
 
         # Формируем клавиатуру
-        keyboard_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton(f'{words_to_show[0].translation}',
-                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{data[4]}_{theme_id}_{result}')],
-            [InlineKeyboardButton(f'{words_to_show[1].translation}',
-                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{data[4]}_{theme_id}_{result}')],
-            [InlineKeyboardButton(f'{words_to_show[2].translation}',
-                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{data[4]}_{theme_id}_{result}')],
-            [InlineKeyboardButton(f'{words_to_show[3].translation}',
-                                  callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{data[4]}_{theme_id}_{result}')],
-            [InlineKeyboardButton(f'Показать пример', callback_data='@example'),
-             InlineKeyboardButton(f'Завершить тест', callback_data='@exit')],
+        keyboard_markup = bot_instance.inline_keyboard_markup([
+            [bot_instance.inline_keyboard_button(f'{words_to_show[0].translation}',
+                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{data[4]}_{theme_id}_{result}')],
+            [bot_instance.inline_keyboard_button(f'{words_to_show[1].translation}',
+                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{data[4]}_{theme_id}_{result}')],
+            [bot_instance.inline_keyboard_button(f'{words_to_show[2].translation}',
+                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{data[4]}_{theme_id}_{result}')],
+            [bot_instance.inline_keyboard_button(f'{words_to_show[3].translation}',
+                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{data[4]}_{theme_id}_{result}')],
+            [bot_instance.inline_keyboard_button(f'Показать пример', callback_data='@example'),
+             bot_instance.inline_keyboard_button(f'Завершить тест', callback_data='@exit')],
         ])
 
-        update.callback_query.message.edit_text(
-            f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
-            reply_markup=keyboard_markup)
-        # f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
-
-
-def test_end(update: Update, context: CallbackContext):
-    pass
+        bot_instance.edit_message_text(chat_id, message_id=message_id,
+                                       text=f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}',
+                                       reply_markup=keyboard_markup)

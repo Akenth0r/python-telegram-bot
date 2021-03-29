@@ -1,13 +1,12 @@
-from telegram import Update
-from telegram.ext import ConversationHandler, CallbackContext
-
 import states
 from db import User, get_user
 from bot_views import start
 
 
-def show_statistics(update: Update, context: CallbackContext):
-    user = get_user(update.callback_query.message.chat_id)
+def show_statistics(update, bot_instance):
+    chat_id = update['callback_query']['message']['chat']['id']
+    message_id = update['callback_query']['message']['message_id']
+    user = get_user(chat_id)
     stats = user.statistics
 
     word_dict = stats.remembered_words
@@ -17,7 +16,10 @@ def show_statistics(update: Update, context: CallbackContext):
         if int(word.right_answer_count) >= right_count:
             known_count += 1
 
-    update.callback_query.message.edit_text(f'Вы выучили {known_count} слов(а)')
+
+    bot_instance.answer_callback_query(update['callback_query']['id'])
+    bot_instance.edit_message_text(chat_id, message_id=message_id, text=f'Вы выучили {known_count} слов(а)')
+
 
     # Возвращаемся на главный экран
-    start.restart(update)
+    start.restart(update, bot_instance)
