@@ -18,8 +18,7 @@ def show_statistics(update, bot_instance):
 
 
     bot_instance.answer_callback_query(update['callback_query']['id'])
-    bot_instance.edit_message_text(chat_id, message_id=message_id, text=f'Вы выучили {known_count} слов(а)')
-
+    bot_instance.send_message(chat_id, reply_to_message_id=message_id, text=f'Вы выучили {known_count} слов(а)')
 
     # Возвращаемся на главный экран
     start.restart(update, bot_instance)
