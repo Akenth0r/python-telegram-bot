@@ -105,6 +105,6 @@ def get_user(id):
 def get_user_words_to_repeat_count(id):
     user = get_user(id)
     session = Session()
-    count = session.query(WordStatistics).filter(datetime.utcnow() - WordStatistics.updated_at >= timedelta(minutes=repeat_config.WORD_REPEAT_PERIOD))
+    count = session.query(WordStatistics).filter(datetime.utcnow() - WordStatistics.updated_at >= timedelta(minutes=repeat_config.WORD_REPEAT_PERIOD)).count()
     return count
 base.metadata.create_all(engine)
