@@ -50,7 +50,7 @@ def test_begin(update, bot_instance):
                                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{wc}_{theme_id}_{0}')],
         [bot_instance.inline_keyboard_button(f'{words_to_show[3].translation}',
                                              callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{wc}_{theme_id}_{0}')],
-        [bot_instance.inline_keyboard_button(f'Показать пример', callback_data='@example'),
+        [bot_instance.inline_keyboard_button(f'Показать пример', callback_data=f'@example_{current_word.id}'),
          bot_instance.inline_keyboard_button(f'Завершить тест', callback_data='@exit')],
     ])
     bot_instance.edit_message_text(chat_id, message_id=message_id, reply_markup=keyboard_markup,
