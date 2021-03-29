@@ -23,4 +23,4 @@ def repeat_after(update, bot_instance):
                                    text=f'Отлично, напомню тебе через {repeat_config.USER_REPEAT_PERIOD} минут!')
 
 def repeat(update, bot_instance):
-    bot_instance.send_message(update['message']['chat']['id'], 'Функционал в разработке')
+    bot_instance.send_message(update['message']['chat']['id'], 'Функционал в разработке Никитой')
