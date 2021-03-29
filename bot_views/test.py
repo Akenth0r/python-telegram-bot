@@ -18,6 +18,7 @@ def test_begin(update, bot_instance):
     message_id = update['callback_query']['message']['message_id']
     user = get_user(chat_id)
     user.last_session = datetime.datetime.utcnow().timestamp()
+    user.save()
     bot_instance.answer_callback_query(update['callback_query']['id'])
 
     # Вот тут мы подгружаем слова по теме и считаем число правильных ответов
