@@ -60,6 +60,7 @@ class ThemeWord(base):
     theme_id = Column(String, ForeignKey('theme.id'))
     original = Column(String, nullable=False)
     translation = Column(String, nullable=False)
+    example = Column(String, nullable=False)
 
 
 # Тема - массив слов и название
