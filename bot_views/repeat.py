@@ -23,4 +23,5 @@ def repeat_after(update, bot_instance):
                                    text=f'Отлично, напомню тебе через {repeat_config.USER_REPEAT_PERIOD} минут!')
 
 def repeat(update, bot_instance):
-    bot_instance.send_message(update['callback_query']['message']['chat']['id'], 'Функционал в разработке Никитой')
+    bot_instance.answer_callback_query(update['callback_query']['id'])
+    bot_instance.send_message(update['callback_query']['message']['chat']['id'], 'Функционал в разработке у Никиты')
