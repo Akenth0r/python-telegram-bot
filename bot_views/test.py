@@ -17,7 +17,7 @@ def test_begin(update, bot_instance):
     chat_id = update['callback_query']['message']['chat']['id']
     message_id = update['callback_query']['message']['message_id']
     user = get_user(chat_id)
-    user.last_session = datetime.datetime.utcnow().timestamp()
+    user.last_session = datetime.datetime.utcnow()
     user.save()
     bot_instance.answer_callback_query(update['callback_query']['id'])
 
@@ -87,12 +87,12 @@ def test(update, bot_instance):
             word_statistics.theme_word_id = word_model.id
             word_statistics.right_answer_count = 1
             word_statistics.user_statistics_id = user.statistics.id
-            word_statistics.updated_at = datetime.datetime.utcnow().timestamp()
+            word_statistics.updated_at = datetime.datetime.utcnow()
             session.add(word_statistics)
             session.commit()
         else:
             word_statistics.right_answer_count += 1
-            word_statistics.updated_at = datetime.datetime.utcnow().timestamp()
+            word_statistics.updated_at = datetime.datetime.utcnow()
             session.add(word_statistics)
             session.commit()
 
