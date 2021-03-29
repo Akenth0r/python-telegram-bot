@@ -18,7 +18,6 @@ class UserSettings(base):
     right_answer_count = Column(Integer, default=5)
     session_words_count = Column(Integer, default=5)
     user = relationship("User", back_populates="settings")
-    last_session = Column(DateTime)
     # def __init__(self, theme_id='animals', right_answer_count=1, session_words_count=5):
     #     self.theme_id = theme_id
     #     self.right_answer_count = right_answer_count
@@ -49,6 +48,7 @@ class User(base):
     id = Column(Integer, unique=True, primary_key=True)
     settings = relationship("UserSettings", uselist=False, back_populates="user")
     statistics = relationship("UserStatistics", uselist=False, back_populates="user")
+    last_session = Column(DateTime)
 
     def save(self):
         session = Session()
