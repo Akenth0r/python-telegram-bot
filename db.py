@@ -1,6 +1,11 @@
+from datetime import datetime, timedelta
+
 from sqlalchemy import *  # create_engine, Column, Integer
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker, scoped_session
 from sqlalchemy.pool import NullPool
+from sqlalchemy import func
+
+import repeat_config
 
 URI = 'postgresql://pteegqukkuhdya:63913c9f332b517edeb9b86bb0f6ccefecb5cb74f9d542bf331c01b5fe429d87@ec2-54-155-87-214.eu-west-1.compute.amazonaws.com:5432/dc3q6c1898ed1j'
 
@@ -38,7 +43,7 @@ class UserStatistics(base):
     __tablename__ = 'user_statistics'
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    remembered_words = relationship("WordStatistics")
+    remembered_words = relationship("WordStatistics", order_by='word_statistics')
     user = relationship("User", back_populates="statistics")
 
 
@@ -97,4 +102,9 @@ def get_user(id):
         session.commit()
     return user
 
+def get_user_words_to_repeat_count(id):
+    user = get_user(id)
+    session = Session()
+    count = session.query(WordStatistics).filter(datetime.utcnow() - WordStatistics.updated_at >= timedelta(minutes=repeat_config.WORD_REPEAT_PERIOD))
+    return count
 base.metadata.create_all(engine)

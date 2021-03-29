@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import repeat_config
-from db import get_user
+from db import get_user, get_user_words_to_repeat_count
 
 
 def notify(update, bot_instance):
@@ -25,3 +25,7 @@ def repeat_after(update, bot_instance):
 def repeat(update, bot_instance):
     bot_instance.answer_callback_query(update['callback_query']['id'])
     bot_instance.send_message(update['callback_query']['message']['chat']['id'], 'Функционал в разработке у Никиты')
+
+def repeat_count(update, bot_instance):
+    count = get_user_words_to_repeat_count(update['message']['chat']['id'])
+    bot_instance.send_message(update['message']['chat']['id'], text=f'Words count is {count}')

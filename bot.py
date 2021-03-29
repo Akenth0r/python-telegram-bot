@@ -25,6 +25,8 @@ class LanguageLearningBot:
             # Тестовая штучка
             if 'text' in update['message'] and update['message']['text'] == '/repeat':
                 repeat.notify(update, self)
+            if 'text' in update['message'] and update['message']['text'] == '/repeat_count':
+                repeat.repeat_count(update, self)
             return
 
         state_map = {
