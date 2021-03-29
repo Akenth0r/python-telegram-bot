@@ -43,7 +43,7 @@ class UserStatistics(base):
     __tablename__ = 'user_statistics'
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    remembered_words = relationship("WordStatistics", order_by='desc(word_statistics.updated_at)')
+    remembered_words = relationship("WordStatistics", order_by='desc(WordStatistics.updated_at)')
     user = relationship("User", back_populates="statistics")
 
 
