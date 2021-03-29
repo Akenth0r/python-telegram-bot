@@ -4,18 +4,20 @@ from bot_views import start
 
 
 def settings_start(update, bot_instance):
-
     # Формируем клавиатуру
     keyboard_markup = bot_instance.inline_keyboard_markup([
         [bot_instance.inline_keyboard_button(f'Тему', callback_data=f'{states.SET_THEME}')],
-        [bot_instance.inline_keyboard_button(f'Количество вопросов в тесте', callback_data=f'{states.SET_SESSION_WORDS_MENU}')],
-        [bot_instance.inline_keyboard_button(f'Необходимое количество правильных ответов', callback_data=f'{states.SET_RIGHT_ANSWER_MENU}')],
+        [bot_instance.inline_keyboard_button(f'Количество вопросов в тесте',
+                                             callback_data=f'{states.SET_SESSION_WORDS_MENU}')],
+        [bot_instance.inline_keyboard_button(f'Необходимое количество правильных ответов',
+                                             callback_data=f'{states.SET_RIGHT_ANSWER_MENU}')],
         [bot_instance.inline_keyboard_button(f'На главную', callback_data=f'{states.EXIT}')],
     ])
     chat_id = update['callback_query']['message']['chat']['id']
     message_id = update['callback_query']['message']['message_id']
     bot_instance.answer_callback_query(update['callback_query']['id'])
-    bot_instance.edit_message_text(chat_id, message_id=message_id, reply_markup=keyboard_markup, text='Выбери что хочешь изменить:')
+    bot_instance.edit_message_text(chat_id, message_id=message_id, reply_markup=keyboard_markup,
+                                   text='Выбери что хочешь изменить:')
 
 
 def set_theme_menu(update, bot_instance):
@@ -50,7 +52,8 @@ def set_right_answer_count_menu(update, bot_instance):
     chat_id = update['callback_query']['message']['chat']['id']
     message_id = update['callback_query']['message']['message_id']
     bot_instance.answer_callback_query(update['callback_query']['id'])
-    bot_instance.send_message(chat_id, 'Количество правильных ответов:', reply_markup=keyboard_markup, reply_to_message_id=message_id)
+    bot_instance.send_message(chat_id, 'Количество правильных ответов:', reply_markup=keyboard_markup,
+                              reply_to_message_id=message_id)
 
 
 def set_session_words_count_menu(update, bot_instance):
@@ -68,7 +71,8 @@ def set_session_words_count_menu(update, bot_instance):
     chat_id = update['callback_query']['message']['chat']['id']
     message_id = update['callback_query']['message']['message_id']
     bot_instance.answer_callback_query(update['callback_query']['id'])
-    bot_instance.send_message(chat_id, 'Количество вопросов в тесте:', reply_markup=keyboard_markup, reply_to_message_id=message_id)
+    bot_instance.send_message(chat_id, 'Количество вопросов в тесте:', reply_markup=keyboard_markup,
+                              reply_to_message_id=message_id)
 
 
 def set_theme(update, bot_instance):

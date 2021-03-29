@@ -30,7 +30,6 @@ def set_webhook():
 
 @app.route("/sendmessage")
 def send_message():
-    #bot.updater.bot.send_message(request.args.get('to'), request.args.get('message'))
     bot.send_message(request.args.get('to'), request.args.get('message'))
 
     return Response(status=200)

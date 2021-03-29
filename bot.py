@@ -46,30 +46,6 @@ class LanguageLearningBot:
 
     # print(update.callback_query.message)
 
-    def _init_handlers(self):
-        pass
-        # disp = self.updater.dispatcher
-        # #disp.add_handler(CommandHandler('start', start.start_command))
-        # #disp.add_handler(CallbackQueryHandler(test.test_begin, pattern=f'^{str(states.TEST)}$'))
-        # disp.add_handler(CallbackQueryHandler(test.test, pattern=f'@_\w+'))
-        # disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'@exit'))
-        # disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'@example'))
-        #
-        # # Settings
-        # #disp.add_handler(CallbackQueryHandler(settings.settings_start, pattern=f'^{str(states.SETTINGS)}$'))
-        # # I changed my mind
-        # #disp.add_handler(CallbackQueryHandler(settings.set_theme_menu, pattern=f'{states.SET_THEME}'))
-        # # disp.add_handler(CallbackQueryHandler(settings.set_right_answer_count_menu,
-        # #                      pattern=f'{states.SET_RIGHT_ANSWER_COUNT}'))
-        # # disp.add_handler(CallbackQueryHandler(settings.set_session_words_count_menu,
-        # #                      pattern=f'{states.SET_SESSION_WORDS_COUNT}'))
-        # disp.add_handler(CallbackQueryHandler(settings.set_right_answer_count, pattern=f'@ac_\w+'))
-        # disp.add_handler(CallbackQueryHandler(settings.set_session_words_count, pattern=f'@wc_\w+'))
-        # disp.add_handler(CallbackQueryHandler(settings.set_theme, pattern=f'@th_\w+'))
-        # #disp.add_handler(CallbackQueryHandler(start.restart, pattern=f'{states.EXIT}'))
-        #
-        # disp.add_handler(CallbackQueryHandler(statistics.show_statistics, pattern=f'^{str(states.STATISTICS)}$'))
-
     def set_webhook(self, url):
         data = {'url': url}
 
