@@ -1,5 +1,6 @@
 from typing import List
 import states
+import datetime
 import random
 from db import Theme, ThemeWord, get_user, WordStatistics, Session
 
@@ -16,6 +17,7 @@ def test_begin(update, bot_instance):
     chat_id = update['callback_query']['message']['chat']['id']
     message_id = update['callback_query']['message']['message_id']
     user = get_user(chat_id)
+    user.last_session = datetime.datetime.utcnow()
     bot_instance.answer_callback_query(update['callback_query']['id'])
 
     # Вот тут мы подгружаем слова по теме и считаем число правильных ответов
@@ -84,10 +86,12 @@ def test(update, bot_instance):
             word_statistics.theme_word_id = word_model.id
             word_statistics.right_answer_count = 1
             word_statistics.user_statistics_id = user.statistics.id
+            word_statistics.updated_at = datetime.datetime.utcnow()
             session.add(word_statistics)
             session.commit()
         else:
             word_statistics.right_answer_count += 1
+            word_statistics.updated_at = datetime.datetime.utcnow()
             session.add(word_statistics)
             session.commit()
 

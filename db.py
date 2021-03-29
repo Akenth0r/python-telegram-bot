@@ -18,6 +18,7 @@ class UserSettings(base):
     right_answer_count = Column(Integer, default=5)
     session_words_count = Column(Integer, default=5)
     user = relationship("User", back_populates="settings")
+    last_session = Column(DateTime)
     # def __init__(self, theme_id='animals', right_answer_count=1, session_words_count=5):
     #     self.theme_id = theme_id
     #     self.right_answer_count = right_answer_count
@@ -30,6 +31,7 @@ class WordStatistics(base):
     user_statistics_id = Column(Integer, ForeignKey('user_statistics.id'))
     theme_word_id = Column(Integer, ForeignKey('theme_word.id'))
     right_answer_count = Column(Integer, default=0)
+    updated_at = Column(DateTime)
 
 
 # Статистика пользователя
