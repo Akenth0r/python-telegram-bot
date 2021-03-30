@@ -117,7 +117,7 @@ def get_user_remembered_words(user: User):
     for word in remembered_words:
         ids.append(word.theme_word_id)
     session = Session()
-    words = session.query(ThemeWord).filter(ThemeWord.id.in_(ids))
+    words = session.query(ThemeWord).filter(ThemeWord.id.in_(ids)).all()
     for word in words:
         print(words.original)
 
