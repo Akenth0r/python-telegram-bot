@@ -116,6 +116,7 @@ def get_user_remembered_words(user: User):
     for word in remembered_words:
         ids.append(word.theme_word_id)
         print(word.theme_word_id)
+    print(ids)
 
     print("*" * 80)
     session = Session()
