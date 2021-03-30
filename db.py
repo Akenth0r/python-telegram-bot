@@ -119,7 +119,7 @@ def get_user_remembered_words(user: User):
     session = Session()
     words = session.query(ThemeWord).filter(ThemeWord.id.in_(ids)).all()
     for word in words:
-        print(words.original)
+        print(word.original)
 
     return words
 base.metadata.create_all(engine)
