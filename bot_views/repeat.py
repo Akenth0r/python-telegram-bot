@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import repeat_config
+from bot_views import test
 from db import get_user, get_user_words_to_repeat_count
 
 
@@ -9,7 +10,10 @@ def notify(update, bot_instance):
         [bot_instance.inline_keyboard_button('Повторить', callback_data='@repeat')],
         [bot_instance.inline_keyboard_button('Повторить позже', callback_data='@repeatAfter')],
     ])
-    bot_instance.send_message(update['message']['chat']['id'], 'Привет!\nТебе пора повторять слова',
+    user = get_user(update['message']['chat']['id'])
+    words_to_repeat_count = get_user_words_to_repeat_count(user.id)
+    if words_to_repeat_count >= user.settings.session_words_count:
+        bot_instance.send_message(update['message']['chat']['id'], f'Привет!\nТебе пора повторить {words_to_repeat_count} слов',
                               reply_to_message_id=update['message']['message_id'], reply_markup=keyboard_markup)
 
 
@@ -23,8 +27,7 @@ def repeat_after(update, bot_instance):
                                    text=f'Отлично, напомню тебе через {repeat_config.USER_REPEAT_PERIOD} минут!')
 
 def repeat(update, bot_instance):
-    bot_instance.answer_callback_query(update['callback_query']['id'])
-    bot_instance.send_message(update['callback_query']['message']['chat']['id'], 'Функционал в разработке у Никиты')
+    test.test_begin(update, bot_instance, is_repeating=True)
 
 def repeat_count(update, bot_instance):
     count = get_user_words_to_repeat_count(update['message']['chat']['id'])

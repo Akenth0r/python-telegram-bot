@@ -12,7 +12,7 @@ words_for_test = []
 
 # theme_name = 'animals'
 
-def test_begin(update, bot_instance):
+def test_begin(update, bot_instance, is_repeating=False):
     session = Session()
     chat_id = update['callback_query']['message']['chat']['id']
     message_id = update['callback_query']['message']['message_id']
@@ -35,7 +35,10 @@ def test_begin(update, bot_instance):
     # Нужно сохранить или вести счетчик по number_of_questions
     wc = int(user.settings.session_words_count)
     # words_for_test: List[ThemeWord] = all_words[0:wc]
-    current_word = all_words[number_of_question]
+    words = all_words
+    if is_repeating is True:
+        words = user.statistics.remembered_words
+    current_word = words[number_of_question]
 
     # Формируем слова для вопроса
     random.shuffle(all_words)
@@ -60,7 +63,7 @@ def test_begin(update, bot_instance):
                                    text=f'Вопрос {number_of_question + 1}\nВыберите перевод слова: {current_word.original}')
 
 
-def test(update, bot_instance):
+def test(update, bot_instance, is_repeating=False):
     session = Session()
     # update.callback_query.data
     chat_id = update['callback_query']['message']['chat']['id']
@@ -106,6 +109,7 @@ def test(update, bot_instance):
         if not word_statistics:
             word_statistics = WordStatistics()
             word_statistics.theme_word_id = word_model.id
+
             word_statistics.right_answer_count = 0
             word_statistics.user_statistics_id = user.statistics.id
             session.add(word_statistics)
@@ -129,7 +133,10 @@ def test(update, bot_instance):
         random.shuffle(all_words)
 
         # Выбираем текущее слово и слова для показа
-        current_word = all_words[0]
+        words = all_words
+        if is_repeating is True:
+            words = user.statistics.remembered_words
+        current_word = words[number_of_question]
         words_to_show = all_words[1:4]
         words_to_show.append(current_word)
         random.shuffle(words_to_show)
