@@ -102,9 +102,24 @@ def get_user(id):
         session.commit()
     return user
 
+
 def get_user_words_to_repeat_count(id):
     user = get_user(id)
     session = Session()
-    count = session.query(WordStatistics).filter(datetime.utcnow() - WordStatistics.updated_at >= timedelta(minutes=repeat_config.WORD_REPEAT_PERIOD)).count()
+    count = session.query(WordStatistics).filter(
+        (datetime.utcnow() - WordStatistics.updated_at >= timedelta(minutes=repeat_config.WORD_REPEAT_PERIOD)) and WordStatistics.user_statistics_id == user.statistics.id).count()
     return count
+
+
+def get_user_remembered_words(user: User):
+    remembered_words = user.statistics.remembered_words
+    ids = []
+    for word in remembered_words:
+        ids.append(word.theme_word_id)
+    session = Session()
+    words = session.query(ThemeWord).filter(ThemeWord.id.in_(ids))
+    for word in words:
+        print(words.original)
+
+    return words
 base.metadata.create_all(engine)
