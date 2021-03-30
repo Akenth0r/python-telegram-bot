@@ -2,7 +2,7 @@ from datetime import datetime
 
 import repeat_config
 from bot_views import test
-from db import get_user, get_user_words_to_repeat_count
+from db import get_user, get_user_words_to_repeat_count, get_user_remembered_words
 
 
 def notify(update, bot_instance):
@@ -13,6 +13,7 @@ def notify(update, bot_instance):
     user = get_user(update['message']['chat']['id'])
     words_to_repeat_count = get_user_words_to_repeat_count(user.id)
     if words_to_repeat_count >= user.settings.session_words_count:
+        get_user_remembered_words(user)
         bot_instance.send_message(update['message']['chat']['id'], f'Привет!\nТебе пора повторить {words_to_repeat_count} слов',
                               reply_to_message_id=update['message']['message_id'], reply_markup=keyboard_markup)
 
