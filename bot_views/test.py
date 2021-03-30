@@ -36,7 +36,9 @@ def test_begin(update, bot_instance, is_repeating=False):
     wc = int(user.settings.session_words_count)
     # words_for_test: List[ThemeWord] = all_words[0:wc]
     words = all_words
+    repeating = 0
     if is_repeating is True:
+        repeating = 1
         words = get_user_remembered_words(user)
     current_word = words[number_of_question]
 
@@ -49,13 +51,13 @@ def test_begin(update, bot_instance, is_repeating=False):
     # f'{number_of_question}_{current_word}_{words_to_show[0]}'
     keyboard_markup = bot_instance.inline_keyboard_markup([
         [bot_instance.inline_keyboard_button(f'{words_to_show[0].translation}',
-                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{wc}_{theme_id}_{0}')],
+                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{wc}_{theme_id}_{0}_{repeating}')],
         [bot_instance.inline_keyboard_button(f'{words_to_show[1].translation}',
-                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{wc}_{theme_id}_{0}')],
+                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{wc}_{theme_id}_{0}_{repeating}')],
         [bot_instance.inline_keyboard_button(f'{words_to_show[2].translation}',
-                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{wc}_{theme_id}_{0}')],
+                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{wc}_{theme_id}_{0}_{repeating}')],
         [bot_instance.inline_keyboard_button(f'{words_to_show[3].translation}',
-                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{wc}_{theme_id}_{0}')],
+                                             callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{wc}_{theme_id}_{0}_{repeating}')],
         [bot_instance.inline_keyboard_button(f'Показать пример', callback_data=f'@example_{current_word.id}'),
          bot_instance.inline_keyboard_button(f'Завершить тест', callback_data='@exit')],
     ])
@@ -135,8 +137,10 @@ def test(update, bot_instance, is_repeating=False):
 
         # Выбираем текущее слово и слова для показа
         words = all_words
+        repeating = int(data[7])
         if is_repeating is True:
             words = get_user_remembered_words(user)
+            repeating = 1
         current_word = words[number_of_question]
         words_to_show = all_words[1:4]
         words_to_show.append(current_word)
@@ -145,13 +149,13 @@ def test(update, bot_instance, is_repeating=False):
         # Формируем клавиатуру
         keyboard_markup = bot_instance.inline_keyboard_markup([
             [bot_instance.inline_keyboard_button(f'{words_to_show[0].translation}',
-                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{data[4]}_{theme_id}_{result}')],
+                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[0].original}_{data[4]}_{theme_id}_{result}_{repeating}')],
             [bot_instance.inline_keyboard_button(f'{words_to_show[1].translation}',
-                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{data[4]}_{theme_id}_{result}')],
+                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[1].original}_{data[4]}_{theme_id}_{result}_{repeating}')],
             [bot_instance.inline_keyboard_button(f'{words_to_show[2].translation}',
-                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{data[4]}_{theme_id}_{result}')],
+                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[2].original}_{data[4]}_{theme_id}_{result}_{repeating}')],
             [bot_instance.inline_keyboard_button(f'{words_to_show[3].translation}',
-                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{data[4]}_{theme_id}_{result}')],
+                                                 callback_data=f'@_{number_of_question}_{current_word.original}_{words_to_show[3].original}_{data[4]}_{theme_id}_{result}_{repeating}')],
             [bot_instance.inline_keyboard_button(f'Показать пример', callback_data=f'@example_{current_word.id}'),
              bot_instance.inline_keyboard_button(f'Завершить тест', callback_data='@exit')],
         ])
