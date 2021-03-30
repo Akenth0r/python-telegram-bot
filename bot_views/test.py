@@ -37,7 +37,7 @@ def test_begin(update, bot_instance, is_repeating=False):
     # words_for_test: List[ThemeWord] = all_words[0:wc]
     words = all_words
     if is_repeating is True:
-        words = user.statistics.remembered_words
+        words = get_user_remembered_words(user)
     current_word = words[number_of_question]
 
     # Формируем слова для вопроса
