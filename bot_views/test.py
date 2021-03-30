@@ -138,10 +138,11 @@ def test(update, bot_instance, is_repeating=False):
         # Выбираем текущее слово и слова для показа
         words = all_words
         repeating = int(data[7])
-        if is_repeating is True:
-            words = get_user_remembered_words(user)
-            repeating = 1
         current_word = words[number_of_question]
+        if is_repeating is True or repeating is 1:
+            words = get_user_remembered_words(user)
+            current_word = words[0]
+            repeating = 1
         words_to_show = all_words[1:4]
         words_to_show.append(current_word)
         random.shuffle(words_to_show)
