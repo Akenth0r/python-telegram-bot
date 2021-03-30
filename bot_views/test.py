@@ -110,7 +110,8 @@ def test(update, bot_instance, is_repeating=False):
             word_statistics = WordStatistics()
             word_statistics.theme_word_id = word_model.id
 
-            word_statistics.right_answer_count = 0
+            if is_repeating is not True:
+                word_statistics.right_answer_count = 0
             word_statistics.user_statistics_id = user.statistics.id
             session.add(word_statistics)
             session.commit()
