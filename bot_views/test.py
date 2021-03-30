@@ -2,7 +2,7 @@ from typing import List
 import states
 import datetime
 import random
-from db import Theme, ThemeWord, get_user, WordStatistics, Session
+from db import Theme, ThemeWord, get_user, WordStatistics, Session, get_user_remembered_words
 
 from db import User, UserSettings, UserStatistics
 
@@ -136,7 +136,7 @@ def test(update, bot_instance, is_repeating=False):
         # Выбираем текущее слово и слова для показа
         words = all_words
         if is_repeating is True:
-            words = user.statistics.remembered_words
+            words = get_user_remembered_words(user)
         current_word = words[number_of_question]
         words_to_show = all_words[1:4]
         words_to_show.append(current_word)

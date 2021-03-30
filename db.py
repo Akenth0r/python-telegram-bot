@@ -110,7 +110,6 @@ def get_user_words_to_repeat_count(id):
         (datetime.utcnow() - WordStatistics.updated_at >= timedelta(minutes=repeat_config.WORD_REPEAT_PERIOD)) & (WordStatistics.user_statistics_id == user.statistics.id)).count()
     return count
 
-
 def get_user_remembered_words(user: User):
     remembered_words = user.statistics.remembered_words
     ids = []
