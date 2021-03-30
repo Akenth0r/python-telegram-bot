@@ -112,15 +112,13 @@ def get_user_words_to_repeat_count(id):
 
 def get_user_remembered_words(user: User):
     remembered_words = user.statistics.remembered_words
-    ids = []
+    words = []
+    session = Session()
     for word in remembered_words:
-        ids.append(word.theme_word_id)
+        words.append(session.query(ThemeWord).filter(ThemeWord == word.theme_word_id).one())
         print(word.theme_word_id)
-    print(ids)
 
     print("*" * 80)
-    session = Session()
-    words = session.query(ThemeWord).filter(ThemeWord.id.in_(ids)).all()
     for word in words:
         print(word.original)
 
