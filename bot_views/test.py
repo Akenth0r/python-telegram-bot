@@ -40,11 +40,15 @@ def test_begin(update, bot_instance, is_repeating=False):
     if is_repeating is True:
         repeating = 1
         words = get_user_remembered_words(user)
+
     current_word = words[number_of_question]
 
     # Формируем слова для вопроса
+    all_words = [item for item in all_words if item.original != current_word.original]
     random.shuffle(all_words)
     words_to_show = all_words[0:3]
+
+    # Добавляем к ним правильное и перемешиваем
     words_to_show.append(current_word)
     random.shuffle(words_to_show)
     # {words_for_test}_
@@ -86,7 +90,7 @@ def test(update, bot_instance, is_repeating=False):
         # TODO: Делать поиск слова
         # Берем слово из бд
         word_statistics = session.query(WordStatistics).where(
-            WordStatistics.theme_word_id == word_model.id and WordStatistics.user_statistics_id == user.statistics.id).one_or_none()
+            (WordStatistics.theme_word_id == word_model.id) & (WordStatistics.user_statistics_id == user.statistics.id)).one_or_none()
         if not word_statistics:
             word_statistics = WordStatistics()
             word_statistics.theme_word_id = word_model.id
@@ -107,20 +111,25 @@ def test(update, bot_instance, is_repeating=False):
 
     else:
         word_statistics = session.query(WordStatistics).where(
-            WordStatistics.theme_word_id == word_model.id and WordStatistics.user_statistics_id == user.statistics.id).one_or_none()
+            (WordStatistics.theme_word_id == word_model.id) & (WordStatistics.user_statistics_id == user.statistics.id)).one_or_none()
+
         if not word_statistics:
             word_statistics = WordStatistics()
             word_statistics.theme_word_id = word_model.id
 
             if is_repeating is not True:
                 word_statistics.right_answer_count = 0
+
+            word_statistics.updated_at = datetime.datetime.utcnow()
             word_statistics.user_statistics_id = user.statistics.id
             session.add(word_statistics)
             session.commit()
         else:
             word_statistics.right_answer_count = 0
+            word_statistics.updated_at = datetime.datetime.utcnow()
             session.add(word_statistics)
             session.commit()
+
     if number_of_question >= int(data[4]):
         keyboard_markup = bot_instance.inline_keyboard_markup(
             [[bot_instance.inline_keyboard_button(f'Окей', callback_data='@exit')]])
@@ -133,6 +142,7 @@ def test(update, bot_instance, is_repeating=False):
 
         # Получаем все слова из темы
         all_words: List[ThemeWord] = current_theme.words
+
         random.shuffle(all_words)
 
         # Выбираем текущее слово и слова для показа
@@ -143,8 +153,12 @@ def test(update, bot_instance, is_repeating=False):
             words = get_user_remembered_words(user)
             current_word = words[0]
             repeating = 1
+
+        all_words = [item for item in all_words if item.original != current_word.original]
         words_to_show = all_words[1:4]
         words_to_show.append(current_word)
+
+        # Исключаем текущее слово и перемешиваем
         random.shuffle(words_to_show)
 
         # Формируем клавиатуру

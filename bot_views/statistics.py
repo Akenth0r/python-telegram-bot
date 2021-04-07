@@ -12,7 +12,9 @@ def show_statistics(update, bot_instance):
     word_dict = stats.remembered_words
     right_count = user.settings.right_answer_count
     known_count = 0
+    print(f'Word dict len: {len(word_dict)}')
     for word in word_dict:
+        print(f'{word.right_answer_count}')
         if int(word.right_answer_count) >= right_count:
             known_count += 1
 
