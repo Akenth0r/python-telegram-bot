@@ -18,4 +18,10 @@ def timed_job():
         for user in users:
             notify_user(bot, user)
 
+@sched.scheduled_job('interval', minutes=1)
+def timed_job():
+    session = Session()
+    user = session.query(User, 950274278).one_or_none()
+    bot.send_message(user.id, text="Ты гей")
+
 sched.start()
