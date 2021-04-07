@@ -133,6 +133,12 @@ def test(update, bot_instance, is_repeating=False):
     if number_of_question >= int(data[4]):
         keyboard_markup = bot_instance.inline_keyboard_markup(
             [[bot_instance.inline_keyboard_button(f'Окей', callback_data='@exit')]])
+
+        if is_repeating:
+            keyboard_markup = bot_instance.inline_keyboard_markup(
+                [[bot_instance.inline_keyboard_button(f'Окей', callback_data='@exit'),
+                 bot_instance.inline_keyboard_button(f'Продолжить', callback_data='@repeat')]])
+
         bot_instance.send_message(chat_id, f'Ваш результат: {result} из {data[4]}',
                                   reply_markup=keyboard_markup)
     else:
