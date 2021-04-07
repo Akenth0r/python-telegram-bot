@@ -11,9 +11,9 @@ def show_statistics(update, bot_instance):
 
     words = get_user_remembered_words(user)
     if len(words):
-        output = ""
+        output = "Слова, которые вы выучили: \n"
         for word in words:
-            output += f'{word.original} - {word.translation}\n'
+            output += f'{word.original} - {word.translation}}\n'
     else:
         output = "Вы не выучили ни одного слова"
 
