@@ -2,7 +2,8 @@ from typing import List
 import states
 import datetime
 import random
-from db import Theme, ThemeWord, get_user, WordStatistics, Session, get_user_remembered_words
+from db import Theme, ThemeWord, get_user, WordStatistics, Session, get_user_remembered_words, \
+    get_user_words_to_repeat_count
 
 from db import User, UserSettings, UserStatistics
 
@@ -136,7 +137,7 @@ def test(update, bot_instance, is_repeating=False):
 
         repeating = int(data[7])
 
-        if repeating == 1 or is_repeating is True:
+        if (repeating == 1 or is_repeating is True) and get_user_words_to_repeat_count(user.id) >= user.settings.session_words_count:
             keyboard_markup = bot_instance.inline_keyboard_markup(
                 [[bot_instance.inline_keyboard_button(f'Окей', callback_data='@exit'),
                  bot_instance.inline_keyboard_button(f'Продолжить', callback_data='@repeat')]])
