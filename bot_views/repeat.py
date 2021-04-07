@@ -13,8 +13,8 @@ def notify(update, bot_instance):
     user = get_user(update['message']['chat']['id'])
     words_to_repeat_count = get_user_words_to_repeat_count(user.id)
 
-    if user.last_session and (datetime.utcnow() - user.last_session) >= timedelta(
-            minutes=repeat_config.USER_REPEAT_PERIOD) and words_to_repeat_count >= user.settings.session_words_count:
+    if user.last_session and (datetime.utcnow() - user.last_session >= timedelta(
+            minutes=repeat_config.USER_REPEAT_PERIOD)) and words_to_repeat_count >= user.settings.session_words_count:
         get_user_remembered_words(user)
         bot_instance.send_message(update['message']['chat']['id'],
                                   f'Привет!\nТебе пора повторить {words_to_repeat_count} слов',
