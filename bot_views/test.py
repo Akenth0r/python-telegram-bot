@@ -134,7 +134,7 @@ def test(update, bot_instance, is_repeating=False):
         keyboard_markup = bot_instance.inline_keyboard_markup(
             [[bot_instance.inline_keyboard_button(f'Окей', callback_data='@exit')]])
 
-        if is_repeating:
+        if is_repeating == 1 or is_repeating is True:
             keyboard_markup = bot_instance.inline_keyboard_markup(
                 [[bot_instance.inline_keyboard_button(f'Окей', callback_data='@exit'),
                  bot_instance.inline_keyboard_button(f'Продолжить', callback_data='@repeat')]])
