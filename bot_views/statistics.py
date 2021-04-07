@@ -13,7 +13,7 @@ def show_statistics(update, bot_instance):
     if len(words):
         output = "Слова, которые вы выучили: \n"
         for word in words:
-            output += f'{word.original} - {word.translation}}\n'
+            output += f'{word.original} - {word.translation}\n'
     else:
         output = "Вы не выучили ни одного слова"
 
