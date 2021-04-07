@@ -7,7 +7,7 @@ from sqlalchemy import func
 
 import repeat_config
 
-URI = 'postgresql://pteegqukkuhdya:63913c9f332b517edeb9b86bb0f6ccefecb5cb74f9d542bf331c01b5fe429d87@ec2-54-155-87-214.eu-west-1.compute.amazonaws.com:5432/dc3q6c1898ed1j'
+URI = 'postgresql://aceafxwryuktoy:9dbacdefe9856601ddc08302f7e9b07e9f52493d8eb44ad3a9c200973e5dadc9@ec2-52-50-171-4.eu-west-1.compute.amazonaws.com:5432/d4a28hicrps565'
 
 engine = create_engine(URI)
 
