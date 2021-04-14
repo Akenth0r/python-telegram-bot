@@ -1,11 +1,13 @@
+import tempfile
 from pathlib import Path
 import json
 
 
 # Save json string to file
 def save_to_file(filepath: str, text: str):
-    with open(filepath, 'w', encoding='utf-8') as file:
+    with tempfile.NamedTemporaryFile(dir=filepath) as file:
         file.write(text)
+        return file.name
 
 
 # Load json from file
