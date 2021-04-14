@@ -1,4 +1,4 @@
-from flask import Flask, Response, request
+from flask import Flask, Response, request, send_from_directory
 from bot import LanguageLearningBot
 import os
 import sqlalchemy
@@ -102,3 +102,9 @@ def add_word_to_theme():
         return f'Word added: {original}'
 
     return f'Word already exists: {original}'
+
+@app.route('/download/<path:filename>')
+def download_file(filename):
+    directory = os.path.join(app.root_path, 'downloads')
+
+    return send_from_directory(directory, filename)
