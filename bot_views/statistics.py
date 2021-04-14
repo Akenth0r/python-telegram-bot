@@ -14,7 +14,7 @@ def show_statistics(update, bot_instance):
 
     words = get_user_remembered_words(user)
     if len(words):
-        output = "Слова, которые вы выучили: \n"
+        output = ""
         for word in words:
             output += f'{word.original} - {word.translation}\n'
         directory = os.path.join(str(update['base_path']), 'tmp')
