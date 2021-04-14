@@ -21,7 +21,9 @@ def show_statistics(update, bot_instance):
         directory = os.path.join(directory, f'{chat_id}')
         file_system_helper.save_to_file(directory, output)
         bot_instance.answer_callback_query(update['callback_query']['id'])
-        bot_instance.send_document(chat_id, f'https://baban-bot.herokuapp.com/download/{chat_id}')
+        print(f'directory is {directory}')
+        print(bot_instance.send_document(chat_id, f'https://baban-bot.herokuapp.com/download/{chat_id}').content)
+
         return
 
     else:
