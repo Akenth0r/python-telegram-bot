@@ -118,5 +118,6 @@ class LanguageLearningBot:
             'chat_id': chat_id,
             'document': document,
         }
+        print(data)
 
         return requests.post(f'{self._api_url}/sendDocument')
