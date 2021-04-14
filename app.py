@@ -81,7 +81,7 @@ def add_new_theme():
         return f'Theme was added successfully: {theme_id}'
     return f'Theme already exists: {theme_id}'
 
-@app.route('addWord')
+@app.route('/addWord')
 def add_word_to_theme():
     session = Session()
     theme_id = request.args.get('theme_id')
