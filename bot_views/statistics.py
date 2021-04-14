@@ -17,7 +17,8 @@ def show_statistics(update, bot_instance):
         output = "Слова, которые вы выучили: \n"
         for word in words:
             output += f'{word.original} - {word.translation}\n'
-        directory = os.path.join(update['base_path'], os.path.join('download', user.id))
+        directory = os.path.join(str(update['base_path']), 'download')
+        directory = os.path.join(directory, str(chat_id))
         file_system_helper.save_to_file(directory, output)
         bot_instance.answer_callback_query(update['callback_query']['id'])
         bot_instance.send_document(chat_id, output)
