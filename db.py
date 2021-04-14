@@ -5,9 +5,9 @@ from sqlalchemy.orm import declarative_base, relationship, sessionmaker, scoped_
 from sqlalchemy.pool import NullPool
 from sqlalchemy import func
 
-import repeat_config
+import repeat_config, os
 
-URI = 'postgresql://aceafxwryuktoy:9dbacdefe9856601ddc08302f7e9b07e9f52493d8eb44ad3a9c200973e5dadc9@ec2-52-50-171-4.eu-west-1.compute.amazonaws.com:5432/d4a28hicrps565'
+URI = os.getenv('DATABASE_URL')
 
 engine = create_engine(URI)
 
