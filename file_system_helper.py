@@ -3,9 +3,9 @@ import json
 
 
 # Save json string to file
-def save_to_file(filepath: str, obj: dict):
+def save_to_file(filepath: str, text: str):
     with open(filepath, 'w', encoding='utf-8') as file:
-        json.dump(obj, file, indent=4)
+        file.write(text)
 
 
 # Load json from file

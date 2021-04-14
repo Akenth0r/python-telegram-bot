@@ -112,3 +112,11 @@ class LanguageLearningBot:
             'text': text,
             'callback_data': callback_data,
         }
+
+    def send_document(self, chat_id, document):
+        data = {
+            'chat_id': chat_id,
+            'document': document,
+        }
+
+        return requests.post(f'{self._api_url}/sendDocument')
