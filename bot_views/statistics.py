@@ -18,7 +18,6 @@ def show_statistics(update, bot_instance):
         for word in words:
             output += f'{word.original} - {word.translation}\n'
         directory = os.path.join(str(update['base_path']), 'tmp')
-        directory = os.path.join(directory, f'{chat_id}')
         filename = file_system_helper.save_to_file(f'tmp', output)
         bot_instance.answer_callback_query(update['callback_query']['id'])
         print(f'directory is {directory}')
