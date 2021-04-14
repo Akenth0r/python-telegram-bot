@@ -9,6 +9,7 @@ from fpdf import FPDF
 def save_to_file(filepath: str, text: str):
     pdf = FPDF()
     pdf.add_page()
+    print(str)
     pdf.set_font("Arial", size=10)
     pdf.multi_cell(0, 8, text)
     pdf.output(filepath)
