@@ -18,12 +18,12 @@ def show_statistics(update, bot_instance):
         for word in words:
             output += f'{word.original} - {word.translation}\n'
         directory = os.path.join(str(update['base_path']), 'tmp')
-        directory = os.path.join(directory, f'{chat_id}')
+        directory = os.path.join(directory, f'{chat_id}.pdf')
         file_system_helper.save_to_file(directory, output)
         print(file_system_helper.is_file_exist(directory))
         bot_instance.answer_callback_query(update['callback_query']['id'])
         print(f'directory is {directory}')
-        print(bot_instance.send_document(chat_id, f'https://baban-bot.herokuapp.com/download/{chat_id}').content)
+        print(bot_instance.send_document(chat_id, f'https://baban-bot.herokuapp.com/download/{chat_id}.pdf').content)
 
         return
 
