@@ -120,4 +120,4 @@ class LanguageLearningBot:
         }
         print(data)
 
-        return requests.post(f'{self._api_url}/sendDocument')
+        return requests.post(f'{self._api_url}/sendDocument', data=data)
