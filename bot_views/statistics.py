@@ -2,7 +2,6 @@ import os
 
 import file_system_helper
 import states
-from app import base_path
 from db import User, get_user, get_user_remembered_words
 from bot_views import start
 
@@ -18,7 +17,7 @@ def show_statistics(update, bot_instance):
         output = "Слова, которые вы выучили: \n"
         for word in words:
             output += f'{word.original} - {word.translation}\n'
-        directory = os.path.join(base_path, 'download', user.id)
+        directory = os.path.join(update['base_path'], 'download', user.id)
         file_system_helper.save_to_file(directory, output)
         bot_instance.send_document(chat_id, output)
     else:

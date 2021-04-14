@@ -11,13 +11,14 @@ URL = os.getenv('URL')
 DEBUG = False
 
 app = Flask(__name__)
-base_path = app.root_path
 bot = LanguageLearningBot(TOKEN)
 
 
 @app.route(f"/{TOKEN}", methods=["GET", "POST"])
 def receive_update():
-    bot.handle_update(request.json)
+    update = request.json
+    update['base_path'] = app.root_path
+    bot.handle_update(update)
 
     return Response(status=200)
 
