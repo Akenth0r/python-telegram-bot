@@ -10,7 +10,7 @@ def save_to_file(filepath: str, text: str):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=15)
-    pdf.cell(200, 10, text)
+    pdf.multi_cell(0, 0, text)
     pdf.output(filepath)
 
 
