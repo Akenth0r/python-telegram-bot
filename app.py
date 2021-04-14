@@ -107,4 +107,6 @@ def add_word_to_theme():
 
 @app.route('/download/<path:filename>')
 def download_file(filename):
-    return send_from_directory('//tmp', filename)
+    directory = os.path.join(app.root_path, 'tmp')
+
+    return send_from_directory(directory, filename)
