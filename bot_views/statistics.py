@@ -16,7 +16,7 @@ def show_statistics(update, bot_instance):
     if len(words):
         output = ""
         for word in words:
-            output += f'{word.original}\n'
+            output += word.original + '\n'
         directory = os.path.join(str(update['base_path']), 'tmp')
         directory = os.path.join(directory, f'{chat_id}.pdf')
         file_system_helper.save_to_file(directory, output)
