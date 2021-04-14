@@ -23,7 +23,7 @@ def show_statistics(update, bot_instance):
         print(file_system_helper.is_file_exist(directory))
         bot_instance.answer_callback_query(update['callback_query']['id'])
         print(f'directory is {directory}')
-        print(bot_instance.send_document(chat_id, f'https://baban-bot.herokuapp.com/download/{chat_id}.pdf').content)
+        print(bot_instance.send_document(chat_id, f'http://baban-bot.herokuapp.com/download/{chat_id}.pdf').content)
 
         return
 
