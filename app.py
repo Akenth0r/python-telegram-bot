@@ -2,7 +2,6 @@ from flask import Flask, Response, request
 from bot import LanguageLearningBot
 import os
 import sqlalchemy
-from fpdf import FPDF
 # https://api.telegram.org/bot1623674677:AAFNHd1PgUbzKH3YW7nUoUGXKzEePGGq3tY/setWebhook?url=https://5ac3d6c47f25.ngrok.io
 from db import User, Session, get_user_remembered_words, Theme, ThemeWord
 
