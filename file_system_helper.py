@@ -5,7 +5,7 @@ import json
 
 # Save json string to file
 def save_to_file(filepath: str, text: str):
-    with tempfile.NamedTemporaryFile(dir=filepath) as file:
+    with tempfile.NamedTemporaryFile(dir=filepath, mode='w') as file:
         file.write(text)
         return file.name
 
