@@ -11,6 +11,7 @@ URL = os.getenv('URL')
 DEBUG = False
 
 app = Flask(__name__)
+base_path = app.root_path
 bot = LanguageLearningBot(TOKEN)
 
 
