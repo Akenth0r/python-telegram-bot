@@ -1,4 +1,4 @@
-from db import User, UserSettings, UserStatistics, Session, get_user
+from db import User, UserSettings, UserStatistics, Session, get_user, ThemeWord, Theme
 from states import TEST, STATISTICS, SETTINGS, CHOOSING
 import json
 
@@ -28,3 +28,4 @@ def restart(update, bot_instance):
                               reply_to_message_id=update['callback_query']['message']['message_id'], reply_markup=keyboard_markup)
     # bot.send_message(update['callback'])
     # update.callback_query.message.reply_text('こんにちは!\n Выбери, что нужно сделать.', reply_markup=keyboard_markup)
+
