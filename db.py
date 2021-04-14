@@ -2,12 +2,11 @@ from datetime import datetime, timedelta
 
 from sqlalchemy import *  # create_engine, Column, Integer
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker, scoped_session
-from sqlalchemy.pool import NullPool
-from sqlalchemy import func
 
-import repeat_config, os
+import os
+import repeat_config
 
-URI = os.getenv('DATABASE_URL')
+URI = os.getenv('DATABASE_URL').replace("://", "ql://", 1)
 
 engine = create_engine(URI)
 
