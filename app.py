@@ -52,6 +52,6 @@ def index():
         output += f'user: {user.id} <br>'
         user_remembered_words = get_user_remembered_words(user)
         for i in range(len(user.statistics.remembered_words)):
-            output += f'{user_remembered_words[i].original} - {user.statistics.remembered_words[i].updated_at} <br>'
+            output += f'{user_remembered_words[i].original} - {user.statistics.remembered_words[i].updated_at} <br><br>'
 
     return output
